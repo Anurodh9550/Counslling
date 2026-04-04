@@ -7,57 +7,57 @@ import { motion } from "framer-motion";
 export default function Home() {
   const [showPopup, setShowPopup] = useState(false);
   const [current, setCurrent] = useState(0);
-const [start, setStart] = useState(false);
+  const [start, setStart] = useState(false);
 
-const sectionRef = useRef(null);
-useEffect(() => {
-  const timer = setTimeout(() => {
-    setShowPopup(true);
-  }, 1000); // 1 second baad popup open
-
-  return () => clearTimeout(timer);
-}, []);
-useEffect(() => {
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        setStart(true);
-      }
-    },
-    { threshold: 0.5 }
-  );
-
-  if (sectionRef.current) {
-    observer.observe(sectionRef.current);
-  }
-
-  return () => observer.disconnect();
-}, []);
-const Counter = ({ target }: any) => {
-  const [count, setCount] = useState(0);
-
+  const sectionRef = useRef(null);
   useEffect(() => {
-    if (!start) return;
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 1000); // 1 second baad popup open
 
-    let startValue = 0;
-    const duration = 2000;
-    const increment = target / (duration / 50);
+    return () => clearTimeout(timer);
+  }, []);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStart(true);
+        }
+      },
+      { threshold: 0.5 }
+    );
 
-    const timer = setInterval(() => {
-      startValue += increment;
-      if (startValue >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(startValue));
-      }
-    }, 50);
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
 
-    return () => clearInterval(timer);
-  }, [start, target]);
+    return () => observer.disconnect();
+  }, []);
+  const Counter = ({ target }: any) => {
+    const [count, setCount] = useState(0);
 
-  return <span>{count}</span>;
-};
+    useEffect(() => {
+      if (!start) return;
+
+      let startValue = 0;
+      const duration = 2000;
+      const increment = target / (duration / 50);
+
+      const timer = setInterval(() => {
+        startValue += increment;
+        if (startValue >= target) {
+          setCount(target);
+          clearInterval(timer);
+        } else {
+          setCount(Math.floor(startValue));
+        }
+      }, 50);
+
+      return () => clearInterval(timer);
+    }, [start, target]);
+
+    return <span>{count}</span>;
+  };
   const images = [
     "/images/01.png",
     "/images/02.png",
@@ -66,7 +66,7 @@ const Counter = ({ target }: any) => {
     "/images/newbackground.jpg"
   ];
 
-  
+
 
   // 🔥 Auto Slide
   useEffect(() => {
@@ -77,24 +77,24 @@ const Counter = ({ target }: any) => {
   }, []);
 
   const steps = [
-  { title: "Admission", angle: 0, icon: "📍", color: "bg-pink-500", desc: "Ensuring proper documentation to secure you seat" },
-  
-  { title: "Visa", angle: 40, icon: "📄", color: "bg-red-500", desc: "Adhering to embassy guidelines for successful visa stamping" },
-  
-  { title: "Fly", angle: 80, icon: "🧑‍✈️", color: "bg-red-400", desc: "Assistance to fly economically" },
-  
-  { title: "Airport Pick up", angle: 120, icon: "🤝", color: "bg-orange-500", desc: "We arrange someone to welcome you at airport" },
-  
-  { title: "Accommodation", angle: 160, icon: "🏠", color: "bg-green-500", desc: "Booking your stay in govt/private hostel" },
-  
-  { title: "Registration", angle: 200, icon: "👤", color: "bg-cyan-500", desc: "Our reps will help you in college and other registration" },
-  
-  { title: "Study", angle: 240, icon: "🏫", color: "bg-yellow-500", desc: "We wish you best for your future." },
-  
-  { title: "Introduce", angle: 280, icon: "🌐", color: "bg-blue-500", desc: "We introduce you to all the universities in the world which provide the course you desire" },
-  
-  { title: "Advice", angle: 320, icon: "✈️", color: "bg-teal-500", desc: "We advise you the best university according to your profile" },
-];
+    { title: "Admission", angle: 0, icon: "📍", color: "bg-pink-500", desc: "Ensuring proper documentation to secure you seat" },
+
+    { title: "Visa", angle: 40, icon: "📄", color: "bg-red-500", desc: "Adhering to embassy guidelines for successful visa stamping" },
+
+    { title: "Fly", angle: 80, icon: "🧑‍✈️", color: "bg-red-400", desc: "Assistance to fly economically" },
+
+    { title: "Airport Pick up", angle: 120, icon: "🤝", color: "bg-orange-500", desc: "We arrange someone to welcome you at airport" },
+
+    { title: "Accommodation", angle: 160, icon: "🏠", color: "bg-green-500", desc: "Booking your stay in govt/private hostel" },
+
+    { title: "Registration", angle: 200, icon: "👤", color: "bg-cyan-500", desc: "Our reps will help you in college and other registration" },
+
+    { title: "Study", angle: 240, icon: "🏫", color: "bg-yellow-500", desc: "We wish you best for your future." },
+
+    { title: "Introduce", angle: 280, icon: "🌐", color: "bg-blue-500", desc: "We introduce you to all the universities in the world which provide the course you desire" },
+
+    { title: "Advice", angle: 320, icon: "✈️", color: "bg-teal-500", desc: "We advise you the best university according to your profile" },
+  ];
 
   return (
     <div className="bg-gray-100">
@@ -149,16 +149,16 @@ const Counter = ({ target }: any) => {
               </button>
 
               <button
-  onClick={() => setShowPopup(true)}
-  className="fixed right-5 top-1/2 -translate-y-1/2 z-50 
+                onClick={() => setShowPopup(true)}
+                className="fixed right-5 top-1/2 -translate-y-1/2 z-50 
   bg-gradient-to-b from-teal-500 to-teal-700 
   text-white px-4 py-3 
   rotate-[-90deg] origin-right 
   rounded-t-xl shadow-xl tracking-wide text-sm font-semibold
   hover:scale-105 transition"
->
-  GET FREE COUNSELLING
-</button>
+              >
+                GET FREE COUNSELLING
+              </button>
             </div>
 
             {/* 🔍 SEARCH BAR */}
@@ -220,35 +220,35 @@ const Counter = ({ target }: any) => {
         {/* STATS GRID */}
         <div ref={sectionRef} className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 px-10">
 
-  <div className="flex flex-col items-center">
-    <span className="text-4xl font-bold text-gray-800">
-      <Counter target={10} />+
-    </span>
-    <p className="text-gray-600 mt-2 text-sm">Years Industry Experience</p>
-  </div>
+          <div className="flex flex-col items-center">
+            <span className="text-4xl font-bold text-gray-800">
+              <Counter target={10} />+
+            </span>
+            <p className="text-gray-600 mt-2 text-sm">Years Industry Experience</p>
+          </div>
 
-  <div className="flex flex-col items-center md:border-l border-gray-300">
-    <span className="text-4xl font-bold text-gray-800">
-      <Counter target={10} />+
-    </span>
-    <p className="text-gray-600 mt-2 text-sm">Branches in India</p>
-  </div>
+          <div className="flex flex-col items-center md:border-l border-gray-300">
+            <span className="text-4xl font-bold text-gray-800">
+              <Counter target={10} />+
+            </span>
+            <p className="text-gray-600 mt-2 text-sm">Branches in India</p>
+          </div>
 
-  <div className="flex flex-col items-center md:border-l border-gray-300">
-    <span className="text-4xl font-bold text-gray-800">
-      <Counter target={2000} />+
-    </span>
-    <p className="text-gray-600 mt-2 text-sm">Applications Processed</p>
-  </div>
+          <div className="flex flex-col items-center md:border-l border-gray-300">
+            <span className="text-4xl font-bold text-gray-800">
+              <Counter target={2000} />+
+            </span>
+            <p className="text-gray-600 mt-2 text-sm">Applications Processed</p>
+          </div>
 
-  <div className="flex flex-col items-center md:border-l border-gray-300">
-    <span className="text-4xl font-bold text-gray-800">
-      <Counter target={229} />+
-    </span>
-    <p className="text-gray-600 mt-2 text-sm">Top Universities</p>
-  </div>
+          <div className="flex flex-col items-center md:border-l border-gray-300">
+            <span className="text-4xl font-bold text-gray-800">
+              <Counter target={229} />+
+            </span>
+            <p className="text-gray-600 mt-2 text-sm">Top Universities</p>
+          </div>
 
-</div>
+        </div>
 
       </section>
 
@@ -267,7 +267,7 @@ const Counter = ({ target }: any) => {
           {/* CARD 1 */}
           <div className="bg-white rounded-xl overflow-hidden shadow-lg">
             <div className="relative h-52">
-              <Image src="/images/01.png" alt="course" fill className="object-cover" />
+              <Image src="/images/07.png" alt="course" fill className="object-cover" />
             </div>
             <div className="p-5">
               <h3 className="text-lg font-semibold">Medical</h3>
@@ -370,7 +370,7 @@ const Counter = ({ target }: any) => {
             },
             {
               name: "Tbilisi State Medical University",
-              img: "/images/tbilisi.jpg",
+              img: "/images/Tbilisi.jpg",
             },
             {
               name: "Osh International Medical University",
@@ -451,95 +451,95 @@ const Counter = ({ target }: any) => {
 
                 {/* 📄 DESC */}
                 <p className="text-sm text-gray-500 leading-tight mt-1">
-  {item.desc}
-</p>
+                  {item.desc}
+                </p>
               </div>
             );
           })}
         </div>
       </div>
-{showPopup && (
-  <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+      {showPopup && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
 
-    {/* BOX */}
-    <div className="bg-white w-[90%] md:w-[450px] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-hidden relative">
+          {/* BOX */}
+          <div className="bg-white w-[90%] md:w-[450px] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-hidden relative">
 
-      {/* HEADER */}
-      <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white px-6 py-4 flex justify-between items-center">
-        <h2 className="font-semibold text-lg tracking-wide">
-          Get Free Counselling
-        </h2>
-        <button
-          onClick={() => setShowPopup(false)}
-          className="text-xl hover:rotate-90 transition duration-300"
-        >
-          ✖
-        </button>
-      </div>
+            {/* HEADER */}
+            <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white px-6 py-4 flex justify-between items-center">
+              <h2 className="font-semibold text-lg tracking-wide">
+                Get Free Counselling
+              </h2>
+              <button
+                onClick={() => setShowPopup(false)}
+                className="text-xl hover:rotate-90 transition duration-300"
+              >
+                ✖
+              </button>
+            </div>
 
-      {/* FORM */}
-      <div className="p-6 space-y-4">
+            {/* FORM */}
+            <div className="p-6 space-y-4">
 
-        {/* NAME */}
-        <input
-          type="text"
-          placeholder="Full Name"
-          className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-        />
+              {/* NAME */}
+              <input
+                type="text"
+                placeholder="Full Name"
+                className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+              />
 
-        {/* EMAIL */}
-        <input
-          type="email"
-          placeholder="Email Address"
-          className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-        />
+              {/* EMAIL */}
+              <input
+                type="email"
+                placeholder="Email Address"
+                className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+              />
 
-        {/* MOBILE */}
-        <div className="flex gap-2">
-          <select className="border border-gray-300 px-3 py-2.5 rounded-lg w-[35%]">
-            <option>+91</option>
-            <option>+1</option>
-          </select>
+              {/* MOBILE */}
+              <div className="flex gap-2">
+                <select className="border border-gray-300 px-3 py-2.5 rounded-lg w-[35%]">
+                  <option>+91</option>
+                  <option>+1</option>
+                </select>
 
-          <input
-            type="text"
-            placeholder="Mobile Number"
-            className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
-        </div>
+                <input
+                  type="text"
+                  placeholder="Mobile Number"
+                  className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                />
+              </div>
 
-        {/* STATE */}
-        <select className="w-full border border-gray-300 px-4 py-2.5 rounded-lg">
-          <option>Select State</option>
-          <option>Delhi</option>
-          <option>Mumbai</option>
-        </select>
+              {/* STATE */}
+              <select className="w-full border border-gray-300 px-4 py-2.5 rounded-lg">
+                <option>Select State</option>
+                <option>Delhi</option>
+                <option>Mumbai</option>
+              </select>
 
-        {/* CAPTCHA */}
-        <div className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg border">
-          <span className="text-sm font-medium text-gray-600">1 + 2 = ?</span>
-          <input
-            type="text"
-            className="border px-2 py-1 rounded w-20"
-          />
-        </div>
+              {/* CAPTCHA */}
+              <div className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg border">
+                <span className="text-sm font-medium text-gray-600">1 + 2 = ?</span>
+                <input
+                  type="text"
+                  className="border px-2 py-1 rounded w-20"
+                />
+              </div>
 
-        {/* BUTTON */}
-        <button
-          onClick={() => alert("Form Submitted 🚀")}
-          className="w-full bg-gradient-to-r from-blue-900 to-blue-700 
+              {/* BUTTON */}
+              <button
+                onClick={() => alert("Form Submitted 🚀")}
+                className="w-full bg-gradient-to-r from-blue-900 to-blue-700 
           text-white py-3 rounded-lg font-semibold 
           hover:scale-[1.02] hover:shadow-lg transition duration-300"
-        >
-          ENQUIRE NOW
-        </button>
+              >
+                ENQUIRE NOW
+              </button>
 
-      </div>
-    </div>
-  </div>
-)}
+            </div>
+          </div>
+        </div>
+      )}
 
-      
+
     </div>
   );
 }
