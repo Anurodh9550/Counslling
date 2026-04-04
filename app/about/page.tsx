@@ -9,9 +9,11 @@ export default function AboutPage() {
             {/* 🔥 HERO SECTION */}
             <div className="bg-gradient-to-r from-teal-500 to-teal-400  text-center">
                 <h1 className="text-4xl font-bold text-gray-800">ABOUT US</h1>
-                <p className="mt-2 text-gray-600">
-                    Most Trusted MBBS Abroad Consultancy
-                </p>
+                <div className="overflow-hidden w-full">
+  <p className="whitespace-nowrap animate-slide text-gray-600 mt-2 text-lg font-medium">
+    Most Trusted MBBS Abroad Consultancy 
+  </p>
+</div>
             </div>
 
             {/* 🔥 CONTENT */}
@@ -44,25 +46,21 @@ export default function AboutPage() {
                 </div>
 
                 {/* RIGHT VIDEO IMAGE */}
-                <div className="relative h-[300px]">
-                    <Image
-                        src="/images/team.jpg"
-                        alt="team"
-                        fill
-                        className="object-cover rounded-lg"
-                    />
+                <div className="relative h-[300px] mt-20 rounded-lg ">
 
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="bg-red-500 w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl cursor-pointer">
-                            ▶
-                        </div>
-                    </div>
-                </div>
+  <Image
+    src="/images/team.jpg"
+    alt="team"
+    fill
+    className="object-cover hover:scale-105 transition duration-300 rounded "
+  />
+
+</div>
 
             </div>
 
             {/* 🔥 STATS SECTION */}
-            <div className="bg-gradient-to-r from-blue-400 to-blue-300 text-white py-12 text-center">
+            <div className="bg-gradient-to-r from-blue-400 to-blue-300 text-white py-7 text-center">
                 <div className="grid md:grid-cols-4 gap-8">
                     <div>
                         <h2 className="text-4xl font-bold">10+</h2>
@@ -101,7 +99,7 @@ export default function AboutPage() {
                     />
 
                     <div>
-                        <h3 className="text-2xl font-bold">AMIT VATS</h3>
+                        <h3 className="text-2xl font-bold">----------</h3>
                         <p className="text-teal-600 text-sm mb-3">
                             DIRECTOR,   Book My Global Admission Services
                         </p>
@@ -122,9 +120,9 @@ export default function AboutPage() {
                             better. Always aim to improve and grow.
                         </p>
 
-                        <h3 className="text-2xl font-bold">YUKTI BELWAL</h3>
+                        <h3 className="text-2xl font-bold">-----------</h3>
                         <p className="text-teal-600 text-sm">
-                            CO-FOUNDER, BOOK MY UNIVERSITY
+                            CO-FOUNDER, Book My Global Admission Services
                         </p>
                     </div>
 

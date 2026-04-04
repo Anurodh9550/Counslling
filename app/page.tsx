@@ -1,18 +1,72 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [showPopup, setShowPopup] = useState(false);
   const [current, setCurrent] = useState(0);
+const [start, setStart] = useState(false);
 
+const sectionRef = useRef(null);
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setShowPopup(true);
+  }, 1000); // 1 second baad popup open
+
+  return () => clearTimeout(timer);
+}, []);
+useEffect(() => {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        setStart(true);
+      }
+    },
+    { threshold: 0.5 }
+  );
+
+  if (sectionRef.current) {
+    observer.observe(sectionRef.current);
+  }
+
+  return () => observer.disconnect();
+}, []);
+const Counter = ({ target }: any) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!start) return;
+
+    let startValue = 0;
+    const duration = 2000;
+    const increment = target / (duration / 50);
+
+    const timer = setInterval(() => {
+      startValue += increment;
+      if (startValue >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(startValue));
+      }
+    }, 50);
+
+    return () => clearInterval(timer);
+  }, [start, target]);
+
+  return <span>{count}</span>;
+};
   const images = [
     "/images/01.png",
     "/images/02.png",
     "/images/03.png",
     "/images/06.png",
+    "/images/newbackground.jpg"
   ];
+
+  
 
   // 🔥 Auto Slide
   useEffect(() => {
@@ -23,16 +77,24 @@ export default function Home() {
   }, []);
 
   const steps = [
-    { title: "Admission", angle: 0, icon: "📍", color: "bg-pink-500" },
-    { title: "Visa", angle: 40, icon: "📄", color: "bg-red-500" },
-    { title: "Fly", angle: 80, icon: "🧑‍✈️", color: "bg-red-400" },
-    { title: "Airport Pick up", angle: 120, icon: "🤝", color: "bg-orange-500" },
-    { title: "Accommodation", angle: 160, icon: "🏠", color: "bg-green-500" },
-    { title: "Registration", angle: 200, icon: "👤", color: "bg-cyan-500" },
-    { title: "Study", angle: 240, icon: "🏫", color: "bg-yellow-500" },
-    { title: "Introduce", angle: 280, icon: "🌐", color: "bg-blue-500" },
-    { title: "Advice", angle: 320, icon: "✈️", color: "bg-teal-500" },
-  ];
+  { title: "Admission", angle: 0, icon: "📍", color: "bg-pink-500", desc: "Ensuring proper documentation to secure you seat" },
+  
+  { title: "Visa", angle: 40, icon: "📄", color: "bg-red-500", desc: "Adhering to embassy guidelines for successful visa stamping" },
+  
+  { title: "Fly", angle: 80, icon: "🧑‍✈️", color: "bg-red-400", desc: "Assistance to fly economically" },
+  
+  { title: "Airport Pick up", angle: 120, icon: "🤝", color: "bg-orange-500", desc: "We arrange someone to welcome you at airport" },
+  
+  { title: "Accommodation", angle: 160, icon: "🏠", color: "bg-green-500", desc: "Booking your stay in govt/private hostel" },
+  
+  { title: "Registration", angle: 200, icon: "👤", color: "bg-cyan-500", desc: "Our reps will help you in college and other registration" },
+  
+  { title: "Study", angle: 240, icon: "🏫", color: "bg-yellow-500", desc: "We wish you best for your future." },
+  
+  { title: "Introduce", angle: 280, icon: "🌐", color: "bg-blue-500", desc: "We introduce you to all the universities in the world which provide the course you desire" },
+  
+  { title: "Advice", angle: 320, icon: "✈️", color: "bg-teal-500", desc: "We advise you the best university according to your profile" },
+];
 
   return (
     <div className="bg-gray-100">
@@ -40,97 +102,109 @@ export default function Home() {
       {/* 🔥 HERO SECTION */}
       <section className="relative h-[650px] overflow-hidden">
 
-  {/* 🔥 SLIDER WITH ZOOM */}
-  <div className="absolute inset-0">
-    {images.map((img, i) => (
-      <Image
-        key={i}
-        src={img}
-        alt="background"
-        fill
-        priority
-        className={`
+        {/* 🔥 SLIDER WITH ZOOM */}
+        <div className="absolute inset-0">
+          {images.map((img, i) => (
+            <Image
+              key={i}
+              src={img}
+              alt="background"
+              fill
+              priority
+              className={`
           object-cover transition-all duration-[5000ms] ease-in-out
-          ${i === current 
-            ? "opacity-100 scale-110 blur-[1px]" 
-            : "opacity-0 scale-100"}
+          ${i === current
+                  ? "opacity-100 scale-110 blur-[1px]"
+                  : "opacity-0 scale-100"}
         `}
-      />
-    ))}
-  </div>
+            />
+          ))}
+        </div>
 
-  {/* 🔥 GRADIENT OVERLAY (CLASSIC LOOK) */}
-  <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
+        {/* 🔥 GRADIENT OVERLAY (CLASSIC LOOK) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
 
-  {/* 🔥 CONTENT LEFT SIDE (OFFICE STYLE) */}
-  <div className="relative z-10 h-full flex items-center px-10 md:px-20">
+        {/* 🔥 CONTENT LEFT SIDE (OFFICE STYLE) */}
+        <div className="relative z-10 h-full flex items-center px-10 md:px-20">
 
-    <div className="max-w-xl text-white">
+          <div className="max-w-xl text-white">
 
-      <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-        Build Your <br />
-        <span className="text-teal-400">Global Career</span>
-      </h1>
+            <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+              Build Your <br />
+              <span className="text-teal-400">Global Career</span>
+            </h1>
 
-      <p className="mt-4 text-gray-300 text-lg">
-        Study abroad with top universities. Explore courses, apply easily and shape your future.
-      </p>
+            <p className="mt-4 text-gray-300 text-lg">
+              Study abroad with top universities. Explore courses, apply easily and shape your future.
+            </p>
 
-      {/* 🔥 BUTTONS */}
-      <div className="mt-6 flex gap-4">
-        <button className="bg-teal-600 px-6 py-3 rounded-md hover:bg-teal-700 transition">
-          Explore Courses
+            {/* 🔥 BUTTONS */}
+            <div className="mt-6 flex gap-4">
+              <button className="bg-teal-600 px-6 py-3 rounded-md hover:bg-teal-700 transition">
+                Explore Courses
+              </button>
+
+              <button className="border border-white px-6 py-3 rounded-md hover:bg-white hover:text-black transition">
+                Learn More
+              </button>
+
+              <button
+  onClick={() => setShowPopup(true)}
+  className="fixed right-5 top-1/2 -translate-y-1/2 z-50 
+  bg-gradient-to-b from-teal-500 to-teal-700 
+  text-white px-4 py-3 
+  rotate-[-90deg] origin-right 
+  rounded-t-xl shadow-xl tracking-wide text-sm font-semibold
+  hover:scale-105 transition"
+>
+  GET FREE COUNSELLING
+</button>
+            </div>
+
+            {/* 🔍 SEARCH BAR */}
+            <div className="mt-8 flex w-full max-w-lg shadow-xl rounded-md overflow-hidden">
+
+              <select className="px-4 py-3 bg-teal-600 text-white outline-none">
+                <option>Destination</option>
+                <option>Russia</option>
+                <option>Georgia</option>
+              </select>
+
+              <input
+                type="text"
+                placeholder="Search Universities..."
+                className="flex-1 px-4 py-3 text-black outline-none"
+              />
+
+              <button className="bg-teal-600 px-6 text-white">
+                🔍
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        {/* 🔥 LEFT BUTTON */}
+        <button
+          onClick={() =>
+            setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+          }
+          className="absolute left-5 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/40 transition"
+        >
+          ◀
         </button>
 
-        <button className="border border-white px-6 py-3 rounded-md hover:bg-white hover:text-black transition">
-          Learn More
+        {/* 🔥 RIGHT BUTTON */}
+        <button
+          onClick={() =>
+            setCurrent((prev) => (prev + 1) % images.length)
+          }
+          className="absolute right-5 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/40 transition"
+        >
+          ▶
         </button>
-      </div>
 
-      {/* 🔍 SEARCH BAR */}
-      <div className="mt-8 flex w-full max-w-lg shadow-xl rounded-md overflow-hidden">
-
-        <select className="px-4 py-3 bg-teal-600 text-white outline-none">
-          <option>Destination</option>
-          <option>Russia</option>
-          <option>Georgia</option>
-        </select>
-
-        <input
-          type="text"
-          placeholder="Search Universities..."
-          className="flex-1 px-4 py-3 text-black outline-none"
-        />
-
-        <button className="bg-teal-600 px-6 text-white">
-          🔍
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  {/* 🔥 LEFT BUTTON */}
-  <button
-    onClick={() =>
-      setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1))
-    }
-    className="absolute left-5 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/40 transition"
-  >
-    ◀
-  </button>
-
-  {/* 🔥 RIGHT BUTTON */}
-  <button
-    onClick={() =>
-      setCurrent((prev) => (prev + 1) % images.length)
-    }
-    className="absolute right-5 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/40 transition"
-  >
-    ▶
-  </button>
-
-</section>
+      </section>
 
       {/* 🔥 STATS SECTION */}
       <section className="py-16 bg-gray-100 text-center">
@@ -144,29 +218,37 @@ export default function Home() {
         </p>
 
         {/* STATS GRID */}
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 px-10">
+        <div ref={sectionRef} className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 px-10">
 
-          <div className="flex flex-col items-center">
-            <span className="text-4xl font-bold text-gray-800">10+</span>
-            <p className="text-gray-600 mt-2 text-sm">Years Industry Experience</p>
-          </div>
+  <div className="flex flex-col items-center">
+    <span className="text-4xl font-bold text-gray-800">
+      <Counter target={10} />+
+    </span>
+    <p className="text-gray-600 mt-2 text-sm">Years Industry Experience</p>
+  </div>
 
-          <div className="flex flex-col items-center md:border-l border-gray-300">
-            <span className="text-4xl font-bold text-gray-800">10+</span>
-            <p className="text-gray-600 mt-2 text-sm">Branches in India</p>
-          </div>
+  <div className="flex flex-col items-center md:border-l border-gray-300">
+    <span className="text-4xl font-bold text-gray-800">
+      <Counter target={10} />+
+    </span>
+    <p className="text-gray-600 mt-2 text-sm">Branches in India</p>
+  </div>
 
-          <div className="flex flex-col items-center md:border-l border-gray-300">
-            <span className="text-4xl font-bold text-gray-800">2K+</span>
-            <p className="text-gray-600 mt-2 text-sm">Applications Processed</p>
-          </div>
+  <div className="flex flex-col items-center md:border-l border-gray-300">
+    <span className="text-4xl font-bold text-gray-800">
+      <Counter target={2000} />+
+    </span>
+    <p className="text-gray-600 mt-2 text-sm">Applications Processed</p>
+  </div>
 
-          <div className="flex flex-col items-center md:border-l border-gray-300">
-            <span className="text-4xl font-bold text-gray-800">229+</span>
-            <p className="text-gray-600 mt-2 text-sm">Top Universities</p>
-          </div>
+  <div className="flex flex-col items-center md:border-l border-gray-300">
+    <span className="text-4xl font-bold text-gray-800">
+      <Counter target={229} />+
+    </span>
+    <p className="text-gray-600 mt-2 text-sm">Top Universities</p>
+  </div>
 
-        </div>
+</div>
 
       </section>
 
@@ -369,86 +451,95 @@ export default function Home() {
 
                 {/* 📄 DESC */}
                 <p className="text-sm text-gray-500 leading-tight mt-1">
-                  Sample description here
-                </p>
+  {item.desc}
+</p>
               </div>
             );
           })}
         </div>
       </div>
-      {showPopup && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+{showPopup && (
+  <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
 
-          {/* BOX */}
-          <div className="bg-white w-[500px] rounded-lg shadow-2xl overflow-hidden relative">
+    {/* BOX */}
+    <div className="bg-white w-[90%] md:w-[450px] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-hidden relative">
 
-            {/* HEADER */}
-            <div className="bg-teal-700 text-white px-5 py-4 flex justify-between items-center">
-              <h2 className="font-semibold text-lg">Get free counselling</h2>
-              <button
-                onClick={() => setShowPopup(false)}
-                className="text-xl hover:text-gray-200"
-              >
-                ✖
-              </button>
-            </div>
+      {/* HEADER */}
+      <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white px-6 py-4 flex justify-between items-center">
+        <h2 className="font-semibold text-lg tracking-wide">
+          Get Free Counselling
+        </h2>
+        <button
+          onClick={() => setShowPopup(false)}
+          className="text-xl hover:rotate-90 transition duration-300"
+        >
+          ✖
+        </button>
+      </div>
 
-            {/* FORM */}
-            <div className="p-6 space-y-4">
+      {/* FORM */}
+      <div className="p-6 space-y-4">
 
-              {/* NAME */}
-              <input
-                type="text"
-                placeholder="* Name"
-                className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-              />
+        {/* NAME */}
+        <input
+          type="text"
+          placeholder="Full Name"
+          className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+        />
 
-              {/* EMAIL */}
-              <input
-                type="email"
-                placeholder="* Email"
-                className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-              />
+        {/* EMAIL */}
+        <input
+          type="email"
+          placeholder="Email Address"
+          className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+        />
 
-              {/* MOBILE WITH COUNTRY */}
-              <div className="flex gap-2">
-                <select className="border px-2 py-2 rounded w-[35%]">
-                  <option>India (+91)</option>
-                  <option>USA (+1)</option>
-                </select>
+        {/* MOBILE */}
+        <div className="flex gap-2">
+          <select className="border border-gray-300 px-3 py-2.5 rounded-lg w-[35%]">
+            <option>+91</option>
+            <option>+1</option>
+          </select>
 
-                <input
-                  type="text"
-                  placeholder="* Mobile"
-                  className="w-full border px-3 py-2 rounded"
-                />
-              </div>
-
-              {/* STATE */}
-              <select className="w-full border px-3 py-2 rounded">
-                <option>--Select State--</option>
-                <option>Delhi</option>
-                <option>Mumbai</option>
-              </select>
-
-              {/* CAPTCHA */}
-              <div className="flex items-center gap-2">
-                <span className="text-sm">1 + 2 =</span>
-                <input
-                  type="text"
-                  className="border px-2 py-1 rounded w-24"
-                />
-              </div>
-
-              {/* BUTTON */}
-              <button className="w-full bg-blue-900 text-white py-2 rounded font-semibold hover:bg-blue-800">
-                ENQUIRE NOW
-              </button>
-
-            </div>
-          </div>
+          <input
+            type="text"
+            placeholder="Mobile Number"
+            className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
         </div>
-      )}
+
+        {/* STATE */}
+        <select className="w-full border border-gray-300 px-4 py-2.5 rounded-lg">
+          <option>Select State</option>
+          <option>Delhi</option>
+          <option>Mumbai</option>
+        </select>
+
+        {/* CAPTCHA */}
+        <div className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg border">
+          <span className="text-sm font-medium text-gray-600">1 + 2 = ?</span>
+          <input
+            type="text"
+            className="border px-2 py-1 rounded w-20"
+          />
+        </div>
+
+        {/* BUTTON */}
+        <button
+          onClick={() => alert("Form Submitted 🚀")}
+          className="w-full bg-gradient-to-r from-blue-900 to-blue-700 
+          text-white py-3 rounded-lg font-semibold 
+          hover:scale-[1.02] hover:shadow-lg transition duration-300"
+        >
+          ENQUIRE NOW
+        </button>
+
+      </div>
+    </div>
+  </div>
+)}
+
+      
     </div>
   );
 }

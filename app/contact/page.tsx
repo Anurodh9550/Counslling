@@ -106,9 +106,14 @@ export default function ContactPage() {
             </div>
 
             {/* BUTTON */}
-            <button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:scale-105 transition text-white py-3 rounded-xl font-semibold shadow-lg">
-              Send Message 🚀
-            </button>
+            <button
+  onClick={() => {
+    alert("Message Sent 🚀");
+  }}
+  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:scale-105 transition text-white py-3 rounded-xl font-semibold shadow-lg"
+>
+  Send Message 🚀
+</button>
 
           </form>
         </div>
@@ -122,15 +127,15 @@ export default function ContactPage() {
 
             <p className="flex gap-2">
               📍 <span>
-                74 Link Road, 1st Floor,<br />
-                Opposite Metro Pillar No.27,<br />
-                Lajpat Nagar III,<br />
-                New Delhi-110024
+                ,<br />
+                ,<br />
+                ,<br />
+                
               </span>
             </p>
 
-            <p className="flex gap-2">📞 1800-270-8009</p>
-            <p className="flex gap-2">✉️ info@bookmyuniversity.com</p>
+            <p className="flex gap-2">📞 </p>
+            <p className="flex gap-2">✉️ </p>
 
           </div>
 

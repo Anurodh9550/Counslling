@@ -53,7 +53,7 @@ export default function MedicalPage() {
         <div className="md:col-span-3 space-y-6">
 
           <h1 className="text-2xl font-semibold">
-            Top <span className="text-teal-600">Medical</span> Universities (278)
+            Top <span className="text-teal-600">Medical</span> Universities (20+)
           </h1>
 
           {universities.map((uni, i) => (

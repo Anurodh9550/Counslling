@@ -32,11 +32,12 @@ export default function Header() {
 
   // ✅ COURSE LINKS
   const getCourseLink = (course: string) => {
-   if (course === "Medical") return "/medical";
+    if (course === "Medical") return "/medical";
     if (course === "Engineering") return "/courses/engineering";
-    if (course === "Business and Management") return "/courses/business";
+    
     if (course === "Architecture") return "/courses/architecture";
     if (course === "Commerce") return "/courses/commerce";
+    if (course === "Business Management") return "/courses/business";
     return "#";
   };
 
@@ -59,7 +60,7 @@ export default function Header() {
     if (item === "FIND UNIVERSITY") return "/find-university";
     if (item === "CONTACT US") return "/contact";
     if (item === "ABOUT US") return "/about";
-    if (item === "COURSES") return "/courses"; // ✅ ADD THIS
+    
     return null;
   };
 
@@ -71,7 +72,7 @@ export default function Header() {
       {/* LOGO */}
       <Link href="/">
         <Image
-          src="/images/logo101.png"
+          src="/images/logo55.png"
           alt="logo"
           width={100}
           height={100}
@@ -119,15 +120,21 @@ export default function Header() {
 
               {/* ✅ COURSES DROPDOWN */}
               {item === "COURSES" && showDropdown && (
-                <div className="absolute top-full left-0 bg-white shadow-lg rounded w-56 z-50">
+                <div className="absolute top-full left-0  w-64 
+bg-white/95 backdrop-blur-xl 
+shadow-2xl rounded-xl border border-gray-100 
+z-50 overflow-hidden animate-fadeIn">
                   {courses.map((c, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-2 px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer"
-                    >
-                      <span>{c.icon}</span>
-                      <span>{c.name}</span>
-                    </div>
+                    <Link key={i} href={getCourseLink(c.name)}>
+                      <div
+                        className="flex items-center gap-3 px-5 py-3 
+      hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 
+      hover:text-white transition duration-300 cursor-pointer group"
+                      >
+                        <span>{c.icon}</span>
+                        <span>{c.name}</span>
+                      </div>
+                    </Link>
                   ))}
                 </div>
               )}

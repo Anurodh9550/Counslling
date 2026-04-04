@@ -118,7 +118,7 @@ export default function Footer() {
         {/* LOGO */}
         <div className="flex flex-col items-center md:items-start">
           <Image src="/images/logo55.png" alt="logo" width={100} height={100} />
-          <p className="text-sm mt-2">BOOK MY UNIVERSITY</p>
+          <p className="text-sm mt-2">Book My Global Admission Services</p>
         </div>
 
         {/* APP */}
