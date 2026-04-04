@@ -1,10 +1,22 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
+
+  const countries = [
+    { name: "Russia", flag: "https://flagcdn.com/w40/ru.png" },
+    { name: "Georgia", flag: "https://flagcdn.com/w40/ge.png" },
+    { name: "Kazakhstan", flag: "https://flagcdn.com/w40/kz.png" },
+    { name: "Germany", flag: "https://flagcdn.com/w40/de.png" },
+    { name: "Italy", flag: "https://flagcdn.com/w40/it.png" },
+    { name: "Poland", flag: "https://flagcdn.com/w40/pl.png" },
+    { name: "Nepal", flag: "https://flagcdn.com/w40/np.png" },
+  ];
+
   return (
-    <footer className="bg-gradient-to-r from-teal-500 to-teal-400 text-white pt-16 pb-10 px-10">
+    <footer className="bg-gradient-to-r from-teal-500 to-teal-400 text-white pt-16 pb-10 px-6 md:px-10">
 
       {/* TOP GRID */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
@@ -12,14 +24,27 @@ export default function Footer() {
         {/* COUNTRIES */}
         <div>
           <h3 className="font-semibold mb-4">BEST COUNTRIES TO STUDY ABROAD</h3>
-          <ul className="space-y-2 text-sm">
-            <li>Study in Armenia</li>
-            <li>Study in Bangladesh</li>
-            <li>Study in Belarus</li>
-            <li>Study in China</li>
-            <li>Study in Croatia</li>
-            <li>Study in Germany</li>
-            <li>Study in Italy</li>
+
+          <ul className="space-y-3 text-sm">
+            {countries.map((c, i) => (
+              <li
+                key={i}
+                className="flex items-center gap-3 hover:translate-x-1 transition cursor-pointer"
+              >
+                {/* FLAG */}
+                <div className="w-5 h-5 rounded-full overflow-hidden border border-white">
+                  <Image
+                    src={c.flag}
+                    alt={c.name}
+                    width={20}
+                    height={20}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                <span>Study in {c.name}</span>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -27,12 +52,36 @@ export default function Footer() {
         <div>
           <h3 className="font-semibold mb-4">COMPANY</h3>
           <ul className="space-y-2 text-sm">
-            <li>About us</li>
-            <li>Contact us</li>
-            <li>Blog</li>
-            <li>How it works</li>
-            <li>Gallery</li>
-          </ul>
+
+  <li>
+    <Link href="/about">
+      <span className="cursor-pointer hover:underline hover:text-gray-200 transition">
+        About us
+      </span>
+    </Link>
+  </li>
+
+  <li>
+    <Link href="/contact">
+      <span className="cursor-pointer hover:underline hover:text-gray-200 transition">
+        Contact us
+      </span>
+    </Link>
+  </li>
+
+  <li className="cursor-pointer hover:underline hover:text-gray-200 transition">
+    Blog
+  </li>
+
+  <li className="cursor-pointer hover:underline hover:text-gray-200 transition">
+    How it works
+  </li>
+
+  <li className="cursor-pointer hover:underline hover:text-gray-200 transition">
+    Gallery
+  </li>
+
+</ul>
         </div>
 
         {/* IMPORTANT */}
@@ -74,7 +123,7 @@ export default function Footer() {
 
         {/* APP */}
         <div className="text-center">
-          <p className="font-semibold">DOWNLOAD BMU APP NOW</p>
+          <p className="font-semibold">DOWNLOAD BMG APP NOW</p>
           <p className="mt-2">ANDROID</p>
           <Image
             src="/images/playstore.png"
@@ -88,16 +137,16 @@ export default function Footer() {
         {/* CONTACT */}
         <div className="text-center md:text-right">
           <p>CALL</p>
-          <p className="font-semibold">1800-270-8009</p>
+          <p className="font-semibold">9560616699</p>
           <p className="mt-2">MAIL</p>
-          <p className="font-semibold">info@bookmyuniversity.com</p>
+          <p className="font-semibold">supportbookmyglobal@gmail.com</p>
         </div>
 
       </div>
 
       {/* COPYRIGHT */}
       <div className="text-center text-sm mt-10">
-        © 2025 Book My University. All rights reserved
+        2026 Book My Global Admission Services. All rights reserved
       </div>
 
     </footer>

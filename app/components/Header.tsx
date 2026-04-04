@@ -21,13 +21,24 @@ export default function Header() {
     "CONTACT US",
   ];
 
+  // ✅ COURSES LIST
   const courses = [
-    "Medical",
-    "Engineering",
-    "Business and Management",
-    "Architecture",
-    "Commerce",
+    { name: "Medical", icon: "🩺" },
+    { name: "Engineering", icon: "⚙️" },
+    { name: "Business Management", icon: "💼" },
+    { name: "Architecture", icon: "🏗️" },
+    { name: "Commerce", icon: "📊" },
   ];
+
+  // ✅ COURSE LINKS
+  const getCourseLink = (course: string) => {
+   if (course === "Medical") return "/medical";
+    if (course === "Engineering") return "/courses/engineering";
+    if (course === "Business and Management") return "/courses/business";
+    if (course === "Architecture") return "/courses/architecture";
+    if (course === "Commerce") return "/courses/commerce";
+    return "#";
+  };
 
   const countries = [
     { name: "Russia", flag: "https://flagcdn.com/w40/ru.png" },
@@ -48,6 +59,7 @@ export default function Header() {
     if (item === "FIND UNIVERSITY") return "/find-university";
     if (item === "CONTACT US") return "/contact";
     if (item === "ABOUT US") return "/about";
+    if (item === "COURSES") return "/courses"; // ✅ ADD THIS
     return null;
   };
 
@@ -56,16 +68,18 @@ export default function Header() {
     bg-white/70 backdrop-blur-md shadow-sm 
     sticky top-0 z-50 border-b border-white/20">
 
-      {/* 🔥 LOGO */}
-      <Image
-        src="/images/logo101.png"
-        alt="logo"
-        width={100}
-        height={100}
-        className="cursor-pointer"
-      />
+      {/* LOGO */}
+      <Link href="/">
+        <Image
+          src="/images/logo101.png"
+          alt="logo"
+          width={100}
+          height={100}
+          className="cursor-pointer"
+        />
+      </Link>
 
-      {/* 🔥 DESKTOP NAV */}
+      {/* DESKTOP NAV */}
       <nav className="hidden md:flex gap-2 font-medium relative">
         {menuItems.map((item) => {
           const link = getLink(item);
@@ -87,9 +101,8 @@ export default function Header() {
                 <Link href={link}>
                   <button
                     onClick={() => setActive(item)}
-                    className={`${baseClass} ${
-                      active === item ? activeClass : inactiveClass
-                    }`}
+                    className={`${baseClass} ${active === item ? activeClass : inactiveClass
+                      }`}
                   >
                     {item}
                   </button>
@@ -97,26 +110,29 @@ export default function Header() {
               ) : (
                 <button
                   onClick={() => setActive(item)}
-                  className={`${baseClass} ${
-                    active === item ? activeClass : inactiveClass
-                  }`}
+                  className={`${baseClass} ${active === item ? activeClass : inactiveClass
+                    }`}
                 >
                   {item}
                 </button>
               )}
 
-              {/* COURSES */}
+              {/* ✅ COURSES DROPDOWN */}
               {item === "COURSES" && showDropdown && (
-                <div className="absolute top-full left-0 bg-white shadow rounded w-52 z-50">
+                <div className="absolute top-full left-0 bg-white shadow-lg rounded w-56 z-50">
                   {courses.map((c, i) => (
-                    <div key={i} className="px-4 py-2 hover:bg-gray-100">
-                      {c}
+                    <div
+                      key={i}
+                      className="flex items-center gap-2 px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer"
+                    >
+                      <span>{c.icon}</span>
+                      <span>{c.name}</span>
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* COUNTRIES */}
+              {/* COUNTRIES DROPDOWN */}
               {item === "COUNTRIES" && showCountryDropdown && (
                 <div className="absolute top-full left-1/2 -translate-x-1/2 
                 w-[90vw] md:w-[700px] bg-white shadow-xl rounded-xl p-6 z-50 
@@ -126,7 +142,7 @@ export default function Header() {
                     {countries.map((c, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"
+                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"
                       >
                         <div className="w-8 h-8 rounded-full overflow-hidden border">
                           <Image
@@ -154,50 +170,50 @@ export default function Header() {
         })}
       </nav>
 
-      {/* 🔥 MOBILE MENU BUTTON */}
+      {/* MOBILE MENU BUTTON */}
       <div className="md:hidden ml-auto">
-  <button
-    onClick={() => setMobileMenu(!mobileMenu)}
-    className="text-2xl text-gray-700"
-  >
-    ☰
-  </button>
-</div>
+        <button
+          onClick={() => setMobileMenu(!mobileMenu)}
+          className="text-2xl text-gray-700"
+        >
+          ☰
+        </button>
+      </div>
 
-      {/* 🔥 LOGIN BUTTON */}
+      {/* LOGIN */}
       <Link href="/register">
         <button className="hidden md:block bg-teal-600 text-white px-4 py-1.5 text-sm rounded">
           Login
         </button>
       </Link>
 
-      {/* 🔥 MOBILE MENU */}
+      {/* MOBILE MENU */}
       {mobileMenu && (
-  <div className="absolute top-full left-0 w-full bg-white shadow-md p-4 flex flex-col gap-3 md:hidden">
-    {menuItems.map((item) => {
-      const link = getLink(item);
+        <div className="absolute top-full left-0 w-full bg-white shadow-md p-4 flex flex-col gap-3 md:hidden">
+          {menuItems.map((item) => {
+            const link = getLink(item);
 
-      return link ? (
-        <Link key={item} href={link}>
-          <div
-            onClick={() => setMobileMenu(false)}   // ✅ CLOSE MENU
-            className="py-2 border-b cursor-pointer"
-          >
-            {item}
-          </div>
-        </Link>
-      ) : (
-        <div
-          key={item}
-          onClick={() => setMobileMenu(false)}   // ✅ CLOSE MENU
-          className="py-2 border-b cursor-pointer"
-        >
-          {item}
+            return link ? (
+              <Link key={item} href={link}>
+                <div
+                  onClick={() => setMobileMenu(false)}
+                  className="py-2 border-b cursor-pointer"
+                >
+                  {item}
+                </div>
+              </Link>
+            ) : (
+              <div
+                key={item}
+                onClick={() => setMobileMenu(false)}
+                className="py-2 border-b cursor-pointer"
+              >
+                {item}
+              </div>
+            );
+          })}
         </div>
-      );
-    })}
-  </div>
-)}
+      )}
     </header>
   );
 }

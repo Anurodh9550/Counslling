@@ -38,77 +38,99 @@ export default function Home() {
     <div className="bg-gray-100">
 
       {/* 🔥 HERO SECTION */}
-     <section className="relative h-[600px]  bg-gray-100  overflow-hidden">
+      <section className="relative h-[650px] overflow-hidden">
 
-        {/* 🔥 SLIDER BACKGROUND */}
-        <div className="absolute inset-0">
-          {images.map((img, i) => (
-            <Image
-              key={i}
-              src={img}
-              alt="background"
-              fill
-              priority
-              className={`object-cover transition-opacity duration-1000 ${i === current ? "opacity-100" : "opacity-0"
-                }`}
-            />
-          ))}
-        </div>
+  {/* 🔥 SLIDER WITH ZOOM */}
+  <div className="absolute inset-0">
+    {images.map((img, i) => (
+      <Image
+        key={i}
+        src={img}
+        alt="background"
+        fill
+        priority
+        className={`
+          object-cover transition-all duration-[5000ms] ease-in-out
+          ${i === current 
+            ? "opacity-100 scale-110 blur-[1px]" 
+            : "opacity-0 scale-100"}
+        `}
+      />
+    ))}
+  </div>
 
-        {/* 🔥 DARK OVERLAY */}
-        <div className="absolute inset-0 bg-black/60"></div>
+  {/* 🔥 GRADIENT OVERLAY (CLASSIC LOOK) */}
+  <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
 
-        {/* 🔥 CONTENT */}
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-5">
+  {/* 🔥 CONTENT LEFT SIDE (OFFICE STYLE) */}
+  <div className="relative z-10 h-full flex items-center px-10 md:px-20">
 
-          <h1 className="text-5xl md:text-6xl font-bold">
-            FIND YOUR <span className="text-teal-400">FUTURE</span> TODAY
-          </h1>
+    <div className="max-w-xl text-white">
 
-          <p className="mt-4 text-lg text-gray-300">
-            The Ultimate Guide to Universities Worldwide
-          </p>
+      <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+        Build Your <br />
+        <span className="text-teal-400">Global Career</span>
+      </h1>
 
-          {/* 🔍 SEARCH BAR */}
-          <div className="mt-8 flex w-full max-w-3xl shadow-lg rounded-md overflow-hidden">
+      <p className="mt-4 text-gray-300 text-lg">
+        Study abroad with top universities. Explore courses, apply easily and shape your future.
+      </p>
 
-            <select className="px-4 py-3 bg-teal-600 text-white outline-none">
-              <option>Select Destination</option>
-              <option>India</option>
-              <option>Russia</option>
-              <option>UK</option>
-            </select>
+      {/* 🔥 BUTTONS */}
+      <div className="mt-6 flex gap-4">
+        <button className="bg-teal-600 px-6 py-3 rounded-md hover:bg-teal-700 transition">
+          Explore Courses
+        </button>
 
-            <input
-              type="text"
-              placeholder="Search Universities..."
-              className="flex-1 px-4 py-3 text-black outline-none"
-            />
+        <button className="border border-white px-6 py-3 rounded-md hover:bg-white hover:text-black transition">
+          Learn More
+        </button>
+      </div>
 
-            <button className="bg-teal-600 px-6 text-white">
-              🔍
-            </button>
-          </div>
-        </div>
+      {/* 🔍 SEARCH BAR */}
+      <div className="mt-8 flex w-full max-w-lg shadow-xl rounded-md overflow-hidden">
 
-        {/* 👉 SIDE BUTTON */}
-        <div className="fixed -right-10 top-1/2 -translate-y-1/2 rotate-90 z-50">
-          <div
-            onClick={() => setShowPopup(true)}
-            className="bg-teal-600 text-white px-5 py-2 rounded-t-md cursor-pointer 
-shadow-xl hover:shadow-2xl hover:shadow-teal-500/40 
-hover:bg-teal-700 hover:scale-105 
-transition-all duration-300"
-          >
-            GET FREE COUNSELLING
-          </div>
-        </div>
-        {/* 👉 WHATSAPP BUTTON */}
-        <div className="fixed bottom-5 left-5 bg-green-500 text-white p-4 rounded-full shadow-lg">
-          💬
-        </div>
+        <select className="px-4 py-3 bg-teal-600 text-white outline-none">
+          <option>Destination</option>
+          <option>Russia</option>
+          <option>Georgia</option>
+        </select>
 
-      </section>
+        <input
+          type="text"
+          placeholder="Search Universities..."
+          className="flex-1 px-4 py-3 text-black outline-none"
+        />
+
+        <button className="bg-teal-600 px-6 text-white">
+          🔍
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  {/* 🔥 LEFT BUTTON */}
+  <button
+    onClick={() =>
+      setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+    }
+    className="absolute left-5 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/40 transition"
+  >
+    ◀
+  </button>
+
+  {/* 🔥 RIGHT BUTTON */}
+  <button
+    onClick={() =>
+      setCurrent((prev) => (prev + 1) % images.length)
+    }
+    className="absolute right-5 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/40 transition"
+  >
+    ▶
+  </button>
+
+</section>
 
       {/* 🔥 STATS SECTION */}
       <section className="py-16 bg-gray-100 text-center">
@@ -354,47 +376,72 @@ transition-all duration-300"
           })}
         </div>
       </div>
-{showPopup && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      {showPopup && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
 
           {/* BOX */}
-          <div className="bg-white w-[400px] rounded-lg shadow-lg relative">
+          <div className="bg-white w-[500px] rounded-lg shadow-2xl overflow-hidden relative">
 
             {/* HEADER */}
-            <div className="bg-teal-600 text-white px-4 py-3 flex justify-between items-center rounded-t-lg">
-              <h2 className="font-semibold">Get Free Counselling</h2>
-              <button onClick={() => setShowPopup(false)}>✖</button>
+            <div className="bg-teal-700 text-white px-5 py-4 flex justify-between items-center">
+              <h2 className="font-semibold text-lg">Get free counselling</h2>
+              <button
+                onClick={() => setShowPopup(false)}
+                className="text-xl hover:text-gray-200"
+              >
+                ✖
+              </button>
             </div>
 
             {/* FORM */}
-            <div className="p-5 space-y-4">
+            <div className="p-6 space-y-4">
 
+              {/* NAME */}
               <input
                 type="text"
-                placeholder="Name"
-                className="w-full border px-3 py-2 rounded"
+                placeholder="* Name"
+                className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
 
+              {/* EMAIL */}
               <input
                 type="email"
-                placeholder="Email"
-                className="w-full border px-3 py-2 rounded"
+                placeholder="* Email"
+                className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
 
-              <input
-                type="text"
-                placeholder="Mobile"
-                className="w-full border px-3 py-2 rounded"
-              />
+              {/* MOBILE WITH COUNTRY */}
+              <div className="flex gap-2">
+                <select className="border px-2 py-2 rounded w-[35%]">
+                  <option>India (+91)</option>
+                  <option>USA (+1)</option>
+                </select>
 
+                <input
+                  type="text"
+                  placeholder="* Mobile"
+                  className="w-full border px-3 py-2 rounded"
+                />
+              </div>
+
+              {/* STATE */}
               <select className="w-full border px-3 py-2 rounded">
-                <option>Select State</option>
+                <option>--Select State--</option>
                 <option>Delhi</option>
                 <option>Mumbai</option>
               </select>
 
+              {/* CAPTCHA */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm">1 + 2 =</span>
+                <input
+                  type="text"
+                  className="border px-2 py-1 rounded w-24"
+                />
+              </div>
+
               {/* BUTTON */}
-              <button className="w-full bg-teal-600 text-white py-2 rounded hover:bg-teal-700">
+              <button className="w-full bg-blue-900 text-white py-2 rounded font-semibold hover:bg-blue-800">
                 ENQUIRE NOW
               </button>
 

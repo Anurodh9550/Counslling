@@ -7,7 +7,7 @@ export default function AboutPage() {
         <div className="bg-gray-100">
 
             {/* 🔥 HERO SECTION */}
-            <div className="bg-gradient-to-r from-green-200 via-gray-200 to-purple-200  text-center">
+            <div className="bg-gradient-to-r from-teal-500 to-teal-400  text-center">
                 <h1 className="text-4xl font-bold text-gray-800">ABOUT US</h1>
                 <p className="mt-2 text-gray-600">
                     Most Trusted MBBS Abroad Consultancy
@@ -20,7 +20,7 @@ export default function AboutPage() {
                 {/* LEFT TEXT */}
                 <div>
                     <h2 className="text-2xl font-semibold mb-4">
-                        Welcome To   Book My Global Admission Services
+                        Welcome To Book My Global Admission Services
                     </h2>
 
                     <p className="text-gray-600 mb-4">
@@ -62,7 +62,7 @@ export default function AboutPage() {
             </div>
 
             {/* 🔥 STATS SECTION */}
-            <div className="bg-blue-400 text-white py-16 text-center">
+            <div className="bg-gradient-to-r from-blue-400 to-blue-300 text-white py-12 text-center">
                 <div className="grid md:grid-cols-4 gap-8">
                     <div>
                         <h2 className="text-4xl font-bold">10+</h2>
