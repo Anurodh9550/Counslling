@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { motion } from "framer-motion";
+import { FadeUp } from "../components/motion-ui";
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -12,159 +14,162 @@ export default function ContactPage() {
     agree: false,
   });
 
-  const handleChange = (e: any) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type } = e.target;
+    const checked =
+      type === "checkbox" ? (e.target as HTMLInputElement).checked : false;
     setForm({
       ...form,
       [name]: type === "checkbox" ? checked : value,
     });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(form);
+    alert("Thank you. Your message has been recorded.");
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-teal-50 to-gray-200">
+    <div className="min-h-screen min-w-0 bg-app-bg">
+      <header className="page-inner-hero px-4 py-12 text-center shadow-lg sm:py-14">
+        <FadeUp hero className="mx-auto max-w-xl">
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            Contact us
+          </h1>
+          <p className="mt-3 text-sm text-[var(--text-on-dark-muted)] sm:text-base">
+            Reach our counselling team for admissions, documentation, and
+            programme queries.
+          </p>
+        </FadeUp>
+      </header>
 
-      {/* 🔷 HEADER */}
-      <div className="py-16 text-center bg-gradient-to-r from-teal-400 via-teal-300 to-teal-200 shadow">
-        <h1 className="text-4xl md:text-5xl font-bold text-white tracking-wide">
-          CONTACT US
-        </h1>
-        <p className="mt-3 text-white/90">
-          Let’s help you find the best university 🌍
-        </p>
-      </div>
-
-      {/* 🔷 MAIN */}
-      <div className="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-8">
-
-        {/* 🟢 FORM */}
-        <div className="md:col-span-2 backdrop-blur-md bg-white/70 border border-white/30 rounded-2xl shadow-xl p-8">
-
-          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-            Get In Touch
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3 md:gap-10 md:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          className="md:col-span-2 rounded-xl border p-6 shadow-xl sm:p-8"
+          style={{
+            backgroundColor: "var(--surface)",
+            borderColor: "var(--border)",
+          }}
+        >
+          <h2 className="text-lg font-semibold text-text-heading sm:text-xl">
+            Enquiry form
           </h2>
+          <p className="mt-1 text-sm text-text-muted">
+            Fields marked with accurate details help us respond faster.
+          </p>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-
-            {/* Row 1 */}
-            <div className="grid md:grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2">
               <input
                 type="text"
                 name="firstName"
-                placeholder="First Name"
-                className="input-style"
+                placeholder="First name"
+                className="form-input-official"
                 onChange={handleChange}
+                autoComplete="given-name"
               />
               <input
                 type="text"
                 name="lastName"
-                placeholder="Last Name"
-                className="input-style"
+                placeholder="Last name"
+                className="form-input-official"
                 onChange={handleChange}
+                autoComplete="family-name"
               />
             </div>
 
-            {/* Row 2 */}
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid gap-4 sm:grid-cols-2">
               <input
                 type="email"
                 name="email"
-                placeholder="Email Address"
-                className="input-style"
+                placeholder="Email address"
+                className="form-input-official"
                 onChange={handleChange}
+                autoComplete="email"
               />
               <input
-                type="text"
+                type="tel"
                 name="phone"
-                placeholder="Phone Number"
-                className="input-style"
+                placeholder="Phone number"
+                className="form-input-official"
                 onChange={handleChange}
+                autoComplete="tel"
               />
             </div>
 
-            {/* MESSAGE */}
             <textarea
               name="message"
-              placeholder="Write your message..."
-              rows={4}
-              className="input-style rounded-xl"
+              placeholder="Your message"
+              rows={5}
+              className="form-input-official"
               onChange={handleChange}
-            ></textarea>
+            />
 
-            {/* CHECKBOX */}
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <label className="flex items-center gap-2 text-sm text-text-muted">
               <input
                 type="checkbox"
                 name="agree"
                 onChange={handleChange}
+                className="h-4 w-4 rounded border-[var(--border)]"
               />
-              <span>I agree to receive updates</span>
-            </div>
+              I agree to be contacted regarding my enquiry.
+            </label>
 
-            {/* BUTTON */}
-            <button
-  onClick={() => {
-    alert("Message Sent 🚀");
-  }}
-  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:scale-105 transition text-white py-3 rounded-xl font-semibold shadow-lg"
->
-  Send Message 🚀
-</button>
-
+            <motion.button
+              type="submit"
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              className="w-full rounded-md py-3 text-sm font-semibold text-[var(--accent-foreground)] shadow-md transition hover:opacity-90 sm:text-base"
+              style={{ backgroundColor: "var(--accent)" }}
+            >
+              Send message
+            </motion.button>
           </form>
-        </div>
+        </motion.div>
 
-        {/* 🟢 CONTACT INFO */}
-        <div className="bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-2xl shadow-xl p-8">
-
-          <h2 className="text-xl font-semibold mb-6">Head Office</h2>
-
-          <div className="space-y-5 text-sm">
-
-            <p className="flex gap-2">
-              📍 <span>
-                ,<br />
-                ,<br />
-                ,<br />
-                
-              </span>
+        <motion.aside
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+          className="h-fit rounded-xl border p-6 shadow-xl"
+          style={{
+            backgroundColor: "var(--surface)",
+            borderColor: "var(--border)",
+          }}
+        >
+          <h2 className="border-b pb-3 text-lg font-semibold text-text-heading border-[var(--border)]">
+            Head office
+          </h2>
+          <div className="mt-5 space-y-4 text-sm text-text-muted">
+            <p>
+              <span className="font-medium text-text-heading">Address</span>
+              <br />
+              Please update your registered office address here.
             </p>
-
-            <p className="flex gap-2">📞 </p>
-            <p className="flex gap-2">✉️ </p>
-
+            <p>
+              <span className="font-medium text-text-heading">Phone</span>
+              <br />
+              9560616699
+            </p>
+            <p>
+              <span className="font-medium text-text-heading">Email</span>
+              <br />
+              supportbookmyglobal@gmail.com
+            </p>
           </div>
-
-          {/* EXTRA */}
-          <div className="mt-8">
-            <button className="w-full bg-white text-teal-600 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
-              Chat with us 💬
-            </button>
-          </div>
-
-        </div>
+          <a
+            href="mailto:supportbookmyglobal@gmail.com"
+            className="mt-6 block w-full rounded-md border py-2.5 text-center text-sm font-semibold transition border-[var(--border)] text-text-heading hover:bg-[var(--surface-muted)]"
+          >
+            Email the team
+          </a>
+        </motion.aside>
       </div>
-
-      {/* 🔥 INPUT STYLE (Reusable) */}
-      <style jsx>{`
-        .input-style {
-          padding: 12px;
-          width: 100%;
-          border-radius: 999px;
-          border: 1px solid #e5e7eb;
-          outline: none;
-          transition: 0.3s;
-        }
-        .input-style:focus {
-          border-color: #14b8a6;
-          box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2);
-        }
-      `}</style>
-
     </div>
   );
 }

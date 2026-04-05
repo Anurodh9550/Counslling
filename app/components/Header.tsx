@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   const [active, setActive] = useState("HOME");
@@ -52,8 +54,9 @@ export default function Header() {
   ];
 
   const baseClass = "px-3 py-1.5 text-sm rounded transition";
-  const activeClass = "bg-teal-600 text-white";
-  const inactiveClass = "text-gray-700 hover:text-teal-600";
+  const activeClass = "bg-[var(--accent)] text-[var(--accent-foreground)]";
+  const inactiveClass =
+    "text-[var(--text-body)] hover:text-[var(--accent)]";
 
   const getLink = (item: string) => {
     if (item === "HOME") return "/";
@@ -65,9 +68,16 @@ export default function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between px-4 md:px-8 
-    bg-white/70 backdrop-blur-md shadow-sm 
-    sticky top-0 z-50 border-b border-white/20">
+    <motion.header
+      initial={{ y: -16, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      className="relative z-50 flex flex-wrap items-center justify-between gap-2 border-b px-4 py-2 shadow-md md:px-8 sticky top-0"
+      style={{
+        backgroundColor: "var(--header-bg)",
+        borderColor: "var(--header-border)",
+      }}
+    >
 
       {/* LOGO */}
       <Link href="/">
@@ -81,7 +91,7 @@ export default function Header() {
       </Link>
 
       {/* DESKTOP NAV */}
-      <nav className="hidden md:flex gap-2 font-medium relative">
+      <nav className="hidden md:flex flex-1 justify-center gap-1 lg:gap-2 font-medium relative min-w-0">
         {menuItems.map((item) => {
           const link = getLink(item);
 
@@ -120,36 +130,49 @@ export default function Header() {
 
               {/* ✅ COURSES DROPDOWN */}
               {item === "COURSES" && showDropdown && (
-                <div className="absolute top-full left-0  w-64 
-bg-white/95 backdrop-blur-xl 
-shadow-2xl rounded-xl border border-gray-100 
-z-50 overflow-hidden animate-fadeIn">
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.22 }}
+                  className="absolute top-full left-0 z-50 w-64 overflow-hidden rounded-lg border shadow-xl"
+                  style={{
+                    backgroundColor: "var(--surface-elevated)",
+                    borderColor: "var(--border)",
+                  }}
+                >
                   {courses.map((c, i) => (
                     <Link key={i} href={getCourseLink(c.name)}>
                       <div
-                        className="flex items-center gap-3 px-5 py-3 
-      hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 
-      hover:text-white transition duration-300 cursor-pointer group"
+                        className="flex items-center gap-3 px-5 py-3
+      hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]
+      transition duration-300 cursor-pointer group"
                       >
                         <span>{c.icon}</span>
                         <span>{c.name}</span>
                       </div>
                     </Link>
                   ))}
-                </div>
+                </motion.div>
               )}
 
               {/* COUNTRIES DROPDOWN */}
               {item === "COUNTRIES" && showCountryDropdown && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 
-                w-[90vw] md:w-[700px] bg-white shadow-xl rounded-xl p-6 z-50 
-                max-h-[60vh] overflow-y-auto">
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.22 }}
+                  className="absolute top-full left-1/2 z-50 max-h-[60vh] w-[90vw] -translate-x-1/2 overflow-y-auto rounded-lg border p-6 shadow-xl md:w-[700px]"
+                  style={{
+                    backgroundColor: "var(--surface-elevated)",
+                    borderColor: "var(--border)",
+                  }}
+                >
 
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {countries.map((c, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"
+                        className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-[var(--surface-muted)]"
                       >
                         <div className="w-8 h-8 rounded-full overflow-hidden border">
                           <Image
@@ -160,67 +183,92 @@ z-50 overflow-hidden animate-fadeIn">
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <span className="text-sm">{c.name}</span>
+                        <span className="text-sm text-[var(--text-body)]">
+                          {c.name}
+                        </span>
                       </div>
                     ))}
                   </div>
 
                   <div className="flex justify-center mt-6">
-                    <button className="border border-red-500 text-red-500 px-5 py-2 rounded-full hover:bg-red-500 hover:text-white">
+                    <button
+                      type="button"
+                      className="border border-[var(--accent)] px-5 py-2 rounded-full text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition"
+                    >
                       Explore More
                     </button>
                   </div>
-                </div>
+                </motion.div>
               )}
             </div>
           );
         })}
       </nav>
 
-      {/* MOBILE MENU BUTTON */}
-      <div className="md:hidden ml-auto">
-        <button
-          onClick={() => setMobileMenu(!mobileMenu)}
-          className="text-2xl text-gray-700"
-        >
-          ☰
-        </button>
+      <div className="flex items-center gap-2 md:ml-0 ml-auto">
+        <ThemeToggle />
+        {/* MOBILE MENU BUTTON */}
+        <div className="md:hidden">
+          <button
+            type="button"
+            onClick={() => setMobileMenu(!mobileMenu)}
+            className="text-2xl text-[var(--text-heading)]"
+            aria-expanded={mobileMenu}
+            aria-label="Open menu"
+          >
+            ☰
+          </button>
+        </div>
+
+        {/* LOGIN */}
+        <Link href="/register" className="hidden md:block">
+          <button
+            type="button"
+            className="bg-[var(--accent)] text-[var(--accent-foreground)] px-4 py-1.5 text-sm rounded hover:opacity-90 transition"
+          >
+            Login
+          </button>
+        </Link>
       </div>
 
-      {/* LOGIN */}
-      <Link href="/register">
-        <button className="hidden md:block bg-teal-600 text-white px-4 py-1.5 text-sm rounded">
-          Login
-        </button>
-      </Link>
+      <AnimatePresence>
+        {mobileMenu && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.22 }}
+            className="absolute left-0 top-full flex w-full flex-col gap-3 border-t p-4 shadow-xl md:hidden"
+            style={{
+              backgroundColor: "var(--surface-elevated)",
+              borderColor: "var(--border)",
+            }}
+          >
+            {menuItems.map((item) => {
+              const link = getLink(item);
 
-      {/* MOBILE MENU */}
-      {mobileMenu && (
-        <div className="absolute top-full left-0 w-full bg-white shadow-md p-4 flex flex-col gap-3 md:hidden">
-          {menuItems.map((item) => {
-            const link = getLink(item);
-
-            return link ? (
-              <Link key={item} href={link}>
+              return link ? (
+                <Link key={item} href={link}>
+                  <div
+                    onClick={() => setMobileMenu(false)}
+                    className="cursor-pointer border-b py-2 text-[var(--text-heading)] border-[var(--border)]"
+                  >
+                    {item}
+                  </div>
+                </Link>
+              ) : (
                 <div
+                  key={item}
                   onClick={() => setMobileMenu(false)}
-                  className="py-2 border-b cursor-pointer"
+                  className="cursor-pointer border-b py-2 text-[var(--text-heading)] border-[var(--border)]"
                 >
                   {item}
                 </div>
-              </Link>
-            ) : (
-              <div
-                key={item}
-                onClick={() => setMobileMenu(false)}
-                className="py-2 border-b cursor-pointer"
-              >
-                {item}
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </header>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }

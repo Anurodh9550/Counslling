@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { FadeUp, FadeItem, LiftCard } from "../components/motion-ui";
 
-
-export default function Home() {
-  const [showDropdown, setShowDropdown] = useState(false);
+export default function FindUniversityPage() {
   const courses = [
     { name: "Medical", icon: "🧑‍⚕️" },
     { name: "Engineering", icon: "🛠️" },
@@ -24,118 +23,86 @@ export default function Home() {
     { name: "Agriculture", icon: "🌱" },
     { name: "Computer Science & IT", icon: "💻" },
   ];
+
   const getCourseLink = (name: string) => {
-  if (name === "Medical") return "/medical";
-  if (name === "Engineering") return "/courses/engineering";
-  if (name === "Business and Management") return "/courses/business";
-  if (name === "Architecture") return "/courses/architecture";
-  if (name === "Commerce") return "/courses/commerce";
-  if (name === "Aviation") return "/courses/aviation";
-  if (name === "Hotel Management") return "/courses/hotel";
-  if (name === "Humanities") return "/courses/humanities";
-  if (name === "Journalism & Media") return "/courses/media";
-  if (name === "Law") return "/courses/law";
-  if (name === "Languages & Teaching") return "/courses/language";
-  if (name === "Arts and Design") return "/courses/arts";
-  if (name === "Social Sciences") return "/courses/social";
-  if (name === "Agriculture") return "/courses/agriculture";
-  if (name === "Computer Science & IT") return "/courses/it";
-  return "#";
-};
+    if (name === "Medical") return "/medical";
+    if (name === "Engineering") return "/courses/engineering";
+    if (name === "Business and Management") return "/courses/business";
+    if (name === "Architecture") return "/courses/architecture";
+    if (name === "Commerce") return "/courses/commerce";
+    if (name === "Aviation") return "/courses/aviation";
+    if (name === "Hotel Management") return "/courses/hotel";
+    if (name === "Humanities") return "/courses/humanities";
+    if (name === "Journalism & Media") return "/courses/media";
+    if (name === "Law") return "/courses/law";
+    if (name === "Languages & Teaching") return "/courses/language";
+    if (name === "Arts and Design") return "/courses/arts";
+    if (name === "Social Sciences") return "/courses/social";
+    if (name === "Agriculture") return "/courses/agriculture";
+    if (name === "Computer Science & IT") return "/courses/it";
+    return "#";
+  };
+
   return (
-    <div className="min-h-screen bg-white">
-
-      {/* 🔵 TOP BAR */}
-      <div className="bg-teal-500 text-white text-sm px-10 py-2 flex justify-between">
-        <div className="flex gap-4">
-          <span>📘</span>
-          <span>📷</span>
-          <span>▶️</span>
-        </div>
-
-        <div className="flex gap-6">
-          <Link href="#">JOIN OUR SEMINAR</Link>
-          <Link href="#">APPLY ONLINE</Link>
-          <Link href="#">BLOG</Link>
-          <Link href="#">FAQS</Link>
-        </div>
-      </div>
-
-      {/* 🔴 HEADER */}
-      <div className="flex items-center justify-between px-10 py-4 shadow">
-
-        {/* LOGO */}
-
-
-        {/* CONTACT */}
-        <div className="hidden md:flex gap-10 items-center text-sm">
-          <p>Email:supportbookmyglobal@gmail.com</p>
-          <p>Call: 9560616699 </p>
-        </div>
-
-        {/* LOGIN */}
-        <button className="border px-4 py-2 rounded-md hover:bg-gray-100">
-          Student Login ▶
-        </button>
-      </div>
-
-      {/* 🟢 NAVBAR */}
-
-      {/* 🔥 HERO IMAGE */}
-      <div className="relative h-[300px]">
+    <div className="min-h-screen min-w-0 bg-app-bg">
+      <div className="relative h-[200px] w-full overflow-hidden shadow-lg sm:h-[260px]">
         <Image
           src="/images/Batumi.jpg"
-          alt="hero"
+          alt=""
           fill
           className="object-cover"
+          sizes="100vw"
+          priority
         />
-      </div>
-
-      {/* 🔥 TITLE */}
-
-
-      {/* 🔥 CARDS */}
-
-      {/* 🔥 STUDY AREA SECTION */}
-      <div className="px-10 pb-20 mt-6">
-
-        <h1 className="text-3xl font-bold text-center mb-10">
-          WHAT IS YOUR PREFERRED AREA OF STUDY?
-        </h1>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-
-          
-
-  {courses.map((item, i) => (
-    
-    <Link key={i} href={getCourseLink(item.name)}>
-
-      <div
-        className="bg-white rounded-lg p-6 text-center 
-        shadow-md hover:shadow-2xl 
-        hover:-translate-y-2 hover:scale-105 
-        transition-all duration-300 ease-in-out 
-        cursor-pointer group"
-      >
-        <div className="text-4xl mb-3 transition-transform duration-300 group-hover:scale-110">
-          {item.icon}
+        <div
+          className="absolute inset-0 flex items-end bg-gradient-to-t from-black/55 to-transparent"
+          aria-hidden
+        />
+        <div className="absolute bottom-0 left-0 right-0 px-4 pb-6 sm:px-8">
+          <FadeUp hero>
+            <p className="text-xs font-medium uppercase tracking-wide text-white/90">
+              University directory
+            </p>
+            <h1 className="mt-1 text-2xl font-semibold text-white sm:text-3xl">
+              Find a university by area of study
+            </h1>
+          </FadeUp>
         </div>
-
-        <p className="text-sm font-medium">
-          {item.name}
-        </p>
       </div>
 
-    </Link>
-  ))}
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <FadeUp className="mx-auto max-w-2xl text-center">
+          <p className="text-sm text-text-muted">
+            Select a discipline to explore programmes. Contact details are in
+            the site header for counselling support.
+          </p>
+        </FadeUp>
 
-</div>
-
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
+          {courses.map((item, i) => (
+            <FadeItem key={item.name} index={i}>
+              <Link href={getCourseLink(item.name)}>
+                <LiftCard
+                  className="shadow-card shadow-card-hover rounded-xl border border-[var(--border)] p-4 text-center sm:p-5"
+                  style={{ backgroundColor: "var(--surface)" }}
+                >
+                  <motion.div
+                    className="mb-2 text-3xl sm:mb-3 sm:text-4xl"
+                    aria-hidden
+                    whileHover={{ scale: 1.12, rotate: [0, -4, 4, 0] }}
+                    transition={{ duration: 0.35 }}
+                  >
+                    {item.icon}
+                  </motion.div>
+                  <p className="text-xs font-medium leading-snug text-text-heading sm:text-sm">
+                    {item.name}
+                  </p>
+                </LiftCard>
+              </Link>
+            </FadeItem>
+          ))}
         </div>
-
-
       </div>
-    
+    </div>
   );
 }

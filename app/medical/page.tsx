@@ -1,5 +1,6 @@
 "use client";
 
+import { FadeUp } from "../components/motion-ui";
 import Sidebar from "./Sidebar";
 import UniversityCard from "./UniversityCard";
 
@@ -9,7 +10,7 @@ export default function MedicalPage() {
       name: "Chuvash State University",
       country: "Russia",
       course: ["MBBS"],
-      location: "--",
+      location: "—",
       duration: "6 years",
     },
     {
@@ -43,21 +44,24 @@ export default function MedicalPage() {
   ];
 
   return (
-    <div className="bg-gray-100 min-h-screen p-4 md:p-8">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-
-        {/* LEFT */}
+    <div className="min-h-screen min-w-0 bg-app-bg p-4 md:p-8">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-4">
         <Sidebar />
 
-        {/* RIGHT */}
-        <div className="md:col-span-3 space-y-6">
-
-          <h1 className="text-2xl font-semibold">
-            Top <span className="text-teal-600">Medical</span> Universities (20+)
-          </h1>
+        <div className="space-y-5 md:col-span-3">
+          <FadeUp>
+            <header className="border-b pb-4 shadow-sm border-[var(--border)]">
+              <h1 className="text-xl font-semibold text-text-heading sm:text-2xl">
+                Medical universities
+              </h1>
+              <p className="mt-1 text-sm text-text-muted">
+                Curated list of institutions. Filter using the panel on the left.
+              </p>
+            </header>
+          </FadeUp>
 
           {universities.map((uni, i) => (
-            <UniversityCard key={i} uni={uni} />
+            <UniversityCard key={`${uni.name}-${i}`} uni={uni} />
           ))}
         </div>
       </div>

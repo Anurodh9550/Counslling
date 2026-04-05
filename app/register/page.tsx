@@ -2,127 +2,142 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center">
-
-      {/* 🔥 BACKGROUND */}
+    <div className="relative flex min-h-screen items-center justify-center px-4 py-12">
       <Image
         src="/images/bg-university.jpg"
-        alt="bg"
+        alt=""
         fill
         className="object-cover"
+        sizes="100vw"
+        priority
       />
 
-      {/* 🔥 OVERLAY */}
-      <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+      <div
+        className="absolute inset-0"
+        style={{ backgroundColor: "var(--overlay-scrim)" }}
+        aria-hidden
+      />
 
-      {/* 🔥 CARD */}
-      <div className="relative z-10 w-[90%] max-w-4xl bg-white shadow-xl rounded-md overflow-hidden">
-
-        {/* HEADER */}
-        <div className="bg-teal-500 text-white text-center py-3 text-lg font-semibold">
-          {isLogin ? "LOGIN" : "REGISTER NOW"}
+      <motion.div
+        initial={{ opacity: 0, y: 28, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ type: "spring", damping: 26, stiffness: 280 }}
+        className="relative z-10 w-full max-w-4xl overflow-hidden rounded-xl border shadow-2xl"
+        style={{
+          backgroundColor: "var(--surface)",
+          borderColor: "var(--border)",
+        }}
+      >
+        <div
+          className="py-3 text-center text-base font-semibold text-[var(--accent-foreground)]"
+          style={{ backgroundColor: "var(--accent)" }}
+        >
+          {isLogin ? "Login" : "Register"}
         </div>
 
-        {/* FORM */}
-        <div className="p-6">
-
+        <div className="p-6 sm:p-8">
           {isLogin ? (
-            /* 🔐 LOGIN FORM */
             <div className="space-y-4">
-
-              <div className="flex gap-2">
-                <select className="border px-3 py-2 rounded">
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <select className="form-input-official sm:max-w-[160px]">
                   <option>India (+91)</option>
                 </select>
-
                 <input
                   type="text"
-                  placeholder="10 DIGITS MOBILE NUMBER"
-                  className="border px-4 py-2 rounded w-full"
+                  placeholder="Mobile number (10 digits)"
+                  className="form-input-official flex-1"
+                  inputMode="numeric"
+                  autoComplete="tel"
                 />
               </div>
 
-              <button className="bg-orange-500 hover:bg-orange-600 text-white w-full py-2 rounded">
-                LOGIN
+              <button
+                type="button"
+                className="w-full rounded-md py-2.5 text-sm font-semibold text-[var(--accent-foreground)] transition hover:opacity-90"
+                style={{ backgroundColor: "var(--accent)" }}
+              >
+                Login
               </button>
 
-              <div className="flex justify-between text-sm text-gray-600">
-                <span className="cursor-pointer">❓ Forgot password</span>
-
-                <span
+              <div className="flex flex-col justify-between gap-2 text-sm text-text-muted sm:flex-row sm:items-center">
+                <button type="button" className="text-left hover:text-text-heading">
+                  Forgot password
+                </button>
+                <button
+                  type="button"
                   onClick={() => setIsLogin(false)}
-                  className="text-blue-500 cursor-pointer"
+                  className="text-left font-medium text-[var(--accent)] hover:underline sm:text-right"
                 >
-                  Register here
-                </span>
+                  New user? Register
+                </button>
               </div>
-
             </div>
           ) : (
-            /* 📝 REGISTER FORM */
-            <div className="grid md:grid-cols-2 gap-4">
-
+            <div className="grid gap-4 md:grid-cols-2">
               <input
                 type="text"
-                placeholder="FIRST NAME"
-                className="border px-4 py-2 rounded"
+                placeholder="First name"
+                className="form-input-official"
+                autoComplete="given-name"
               />
-
               <input
                 type="text"
-                placeholder="LAST NAME"
-                className="border px-4 py-2 rounded"
+                placeholder="Last name"
+                className="form-input-official"
+                autoComplete="family-name"
               />
-
-              <select className="border px-4 py-2 rounded">
+              <select className="form-input-official">
                 <option>India (+91)</option>
               </select>
-
               <input
                 type="text"
-                placeholder="10 DIGITS MOBILE NUMBER"
-                className="border px-4 py-2 rounded"
+                placeholder="Mobile number"
+                className="form-input-official"
+                inputMode="numeric"
+                autoComplete="tel"
               />
-
               <input
                 type="email"
-                placeholder="EMAIL"
-                className="border px-4 py-2 rounded"
+                placeholder="Email"
+                className="form-input-official md:col-span-2"
+                autoComplete="email"
               />
-
-              <select className="border px-4 py-2 rounded">
-                <option>--Select State--</option>
+              <select className="form-input-official md:col-span-2">
+                <option>Select state</option>
                 <option>Delhi</option>
                 <option>Mumbai</option>
               </select>
 
-              <div className="col-span-2">
-                <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded">
-                  REGISTER
+              <div className="md:col-span-2">
+                <button
+                  type="button"
+                  className="rounded-md px-6 py-2.5 text-sm font-semibold text-[var(--accent-foreground)] transition hover:opacity-90"
+                  style={{ backgroundColor: "var(--accent)" }}
+                >
+                  Register
                 </button>
               </div>
 
-              <div className="col-span-2 flex justify-between text-sm text-gray-600">
-                <span>❓ Forgot password</span>
-
-                <span
+              <div className="flex flex-col justify-between gap-2 text-sm text-text-muted md:col-span-2 sm:flex-row sm:items-center">
+                <span>Forgot password? Use login flow.</span>
+                <button
+                  type="button"
                   onClick={() => setIsLogin(true)}
-                  className="text-blue-500 cursor-pointer"
+                  className="font-medium text-[var(--accent)] hover:underline"
                 >
-                  Already Register ? Login here
-                </span>
+                  Already registered? Login
+                </button>
               </div>
-
             </div>
           )}
-
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

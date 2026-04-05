@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function Footer() {
 
@@ -16,7 +17,13 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gradient-to-r from-teal-500 to-teal-400 text-white pt-16 pb-10 px-6 md:px-10">
+    <motion.footer
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className="footer-band text-[var(--text-on-dark)] px-6 pb-10 pt-16 shadow-[0_-12px_40px_-12px_rgba(0,0,0,0.12)] md:px-10"
+    >
 
       {/* TOP GRID */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
@@ -55,7 +62,7 @@ export default function Footer() {
 
   <li>
     <Link href="/about">
-      <span className="cursor-pointer hover:underline hover:text-gray-200 transition">
+      <span className="cursor-pointer hover:underline transition hover:text-[var(--footer-link-hover)]">
         About us
       </span>
     </Link>
@@ -63,21 +70,21 @@ export default function Footer() {
 
   <li>
     <Link href="/contact">
-      <span className="cursor-pointer hover:underline hover:text-gray-200 transition">
+      <span className="cursor-pointer hover:underline transition hover:text-[var(--footer-link-hover)]">
         Contact us
       </span>
     </Link>
   </li>
 
-  <li className="cursor-pointer hover:underline hover:text-gray-200 transition">
+  <li className="cursor-pointer hover:underline transition hover:text-[var(--footer-link-hover)]">
     Blog
   </li>
 
-  <li className="cursor-pointer hover:underline hover:text-gray-200 transition">
+  <li className="cursor-pointer hover:underline transition hover:text-[var(--footer-link-hover)]">
     How it works
   </li>
 
-  <li className="cursor-pointer hover:underline hover:text-gray-200 transition">
+  <li className="cursor-pointer hover:underline transition hover:text-[var(--footer-link-hover)]">
     Gallery
   </li>
 
@@ -149,6 +156,6 @@ export default function Footer() {
         2026 Book My Global Admission Services. All rights reserved
       </div>
 
-    </footer>
+    </motion.footer>
   );
 }

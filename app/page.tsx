@@ -2,7 +2,18 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { FadeUp, LiftCard, FadeItem } from "./components/motion-ui";
+
+const HERO_IMAGES = [
+  "/images/01.png",
+  "/images/02.png",
+  "/images/03.png",
+  "/images/06.png",
+  "/images/newbackground.jpg",
+] as const;
+
+const ORBIT_RADIUS_PX = 232;
 
 export default function Home() {
   const [showPopup, setShowPopup] = useState(false);
@@ -13,10 +24,11 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowPopup(true);
-    }, 1000); // 1 second baad popup open
+    }, 8000);
 
     return () => clearTimeout(timer);
   }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -33,14 +45,15 @@ export default function Home() {
 
     return () => observer.disconnect();
   }, []);
-  const Counter = ({ target }: any) => {
+
+  const Counter = ({ target }: { target: number }) => {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
       if (!start) return;
 
       let startValue = 0;
-      const duration = 2000;
+      const duration = 1000;
       const increment = target / (duration / 50);
 
       const timer = setInterval(() => {
@@ -58,303 +71,404 @@ export default function Home() {
 
     return <span>{count}</span>;
   };
-  const images = [
-    "/images/01.png",
-    "/images/02.png",
-    "/images/03.png",
-    "/images/06.png",
-    "/images/newbackground.jpg"
-  ];
 
-
-
-  // 🔥 Auto Slide
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
+      setCurrent((prev) => (prev + 1) % HERO_IMAGES.length);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
 
   const steps = [
-    { title: "Admission", angle: 0, icon: "📍", color: "bg-pink-500", desc: "Ensuring proper documentation to secure you seat" },
-
-    { title: "Visa", angle: 40, icon: "📄", color: "bg-red-500", desc: "Adhering to embassy guidelines for successful visa stamping" },
-
-    { title: "Fly", angle: 80, icon: "🧑‍✈️", color: "bg-red-400", desc: "Assistance to fly economically" },
-
-    { title: "Airport Pick up", angle: 120, icon: "🤝", color: "bg-orange-500", desc: "We arrange someone to welcome you at airport" },
-
-    { title: "Accommodation", angle: 160, icon: "🏠", color: "bg-green-500", desc: "Booking your stay in govt/private hostel" },
-
-    { title: "Registration", angle: 200, icon: "👤", color: "bg-cyan-500", desc: "Our reps will help you in college and other registration" },
-
-    { title: "Study", angle: 240, icon: "🏫", color: "bg-yellow-500", desc: "We wish you best for your future." },
-
-    { title: "Introduce", angle: 280, icon: "🌐", color: "bg-blue-500", desc: "We introduce you to all the universities in the world which provide the course you desire" },
-
-    { title: "Advice", angle: 320, icon: "✈️", color: "bg-teal-500", desc: "We advise you the best university according to your profile" },
+    {
+      title: "Admission",
+      angle: 0,
+      icon: "📍",
+      dotVar: "var(--step-admission)",
+      desc: "Ensuring proper documentation to secure you seat",
+    },
+    {
+      title: "Visa",
+      angle: 40,
+      icon: "📄",
+      dotVar: "var(--step-visa)",
+      desc: "Adhering to embassy guidelines for successful visa stamping",
+    },
+    {
+      title: "Fly",
+      angle: 80,
+      icon: "🧑‍✈️",
+      dotVar: "var(--step-fly)",
+      desc: "Assistance to fly economically",
+    },
+    {
+      title: "Airport Pick up",
+      angle: 120,
+      icon: "🤝",
+      dotVar: "var(--step-airport)",
+      desc: "We arrange someone to welcome you at airport",
+    },
+    {
+      title: "Accommodation",
+      angle: 160,
+      icon: "🏠",
+      dotVar: "var(--step-accommodation)",
+      desc: "Booking your stay in govt/private hostel",
+    },
+    {
+      title: "Registration",
+      angle: 200,
+      icon: "👤",
+      dotVar: "var(--step-registration)",
+      desc: "Our reps will help you in college and other registration",
+    },
+    {
+      title: "Study",
+      angle: 240,
+      icon: "🏫",
+      dotVar: "var(--step-study)",
+      desc: "We wish you best for your future.",
+    },
+    {
+      title: "Introduce",
+      angle: 280,
+      icon: "🌐",
+      dotVar: "var(--step-introduce)",
+      desc: "We introduce you to all the universities in the world which provide the course you desire",
+    },
+    {
+      title: "Advice",
+      angle: 320,
+      icon: "✈️",
+      dotVar: "var(--step-advice)",
+      desc: "We advise you the best university according to your profile",
+    },
   ];
 
   return (
-    <div className="bg-gray-100">
-
-      {/* 🔥 HERO SECTION */}
-      <section className="relative h-[650px] overflow-hidden">
-
-        {/* 🔥 SLIDER WITH ZOOM */}
+    <div className="bg-app-bg text-text-body min-w-0">
+      {/* HERO */}
+      <section className="relative min-h-[min(72vh,560px)] md:h-[650px] md:min-h-0 overflow-hidden">
         <div className="absolute inset-0">
-          {images.map((img, i) => (
+          {HERO_IMAGES.map((img, i) => (
             <Image
               key={i}
               src={img}
-              alt="background"
+              alt=""
               fill
-              priority
-              className={`
-          object-cover transition-all duration-[5000ms] ease-in-out
-          ${i === current
+              priority={i === 0}
+              className={`object-cover transition-all duration-[5000ms] ease-in-out ${
+                i === current
                   ? "opacity-100 scale-110 blur-[1px]"
-                  : "opacity-0 scale-100"}
-        `}
+                  : "opacity-0 scale-100"
+              }`}
             />
           ))}
         </div>
 
-        {/* 🔥 GRADIENT OVERLAY (CLASSIC LOOK) */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
+        <div className="hero-overlay absolute inset-0" aria-hidden />
 
-        {/* 🔥 CONTENT LEFT SIDE (OFFICE STYLE) */}
-        <div className="relative z-10 h-full flex items-center px-10 md:px-20">
-
-          <div className="max-w-xl text-white">
-
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+        <div className="relative z-10 flex min-h-[min(72vh,560px)] md:h-full items-center px-4 pb-28 pt-8 sm:px-8 sm:pb-20 md:px-16 md:pb-0 lg:px-20">
+          <FadeUp
+            hero
+            className="max-w-xl text-[var(--text-on-dark)]"
+          >
+            <h1 className="font-serif text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
               Build Your <br />
-              <span className="text-teal-400">Global Career</span>
+              <span style={{ color: "var(--hero-accent)" }}>
+                Global Career
+              </span>
             </h1>
 
-            <p className="mt-4 text-gray-300 text-lg">
-              Study abroad with top universities. Explore courses, apply easily and shape your future.
+            <p className="mt-4 text-base text-[var(--text-on-dark-muted)] sm:text-lg">
+              Study abroad with top universities. Explore courses, apply easily
+              and shape your future.
             </p>
 
-            {/* 🔥 BUTTONS */}
-            <div className="mt-6 flex gap-4">
-              <button className="bg-teal-600 px-6 py-3 rounded-md hover:bg-teal-700 transition">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
+              <button
+                type="button"
+                className="rounded border border-transparent bg-[var(--accent)] px-6 py-3 text-[var(--accent-foreground)] transition hover:opacity-90"
+              >
                 Explore Courses
               </button>
 
-              <button className="border border-white px-6 py-3 rounded-md hover:bg-white hover:text-black transition">
-                Learn More
-              </button>
-
               <button
-                onClick={() => setShowPopup(true)}
-                className="fixed right-5 top-1/2 -translate-y-1/2 z-50 
-  bg-gradient-to-b from-teal-500 to-teal-700 
-  text-white px-4 py-3 
-  rotate-[-90deg] origin-right 
-  rounded-t-xl shadow-xl tracking-wide text-sm font-semibold
-  hover:scale-105 transition"
+                type="button"
+                className="rounded border px-6 py-3 transition"
+                style={{
+                  borderColor: "var(--btn-secondary-border)",
+                  color: "var(--text-on-dark)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor =
+                    "var(--btn-secondary-hover-bg)";
+                  e.currentTarget.style.color =
+                    "var(--btn-secondary-hover-text)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "var(--text-on-dark)";
+                }}
               >
-                GET FREE COUNSELLING
+                Learn More
               </button>
             </div>
 
-            {/* 🔍 SEARCH BAR */}
-            <div className="mt-8 flex w-full max-w-lg shadow-xl rounded-md overflow-hidden">
-
-              <select className="px-4 py-3 bg-teal-600 text-white outline-none">
+            <div className="mt-8 flex w-full max-w-lg flex-col overflow-hidden rounded-md border border-[var(--border)] shadow-xl sm:flex-row">
+              <select
+                className="px-4 py-3 text-sm outline-none sm:w-auto sm:min-w-[140px]"
+                style={{
+                  backgroundColor: "var(--accent)",
+                  color: "var(--accent-foreground)",
+                }}
+              >
                 <option>Destination</option>
                 <option>Russia</option>
                 <option>Georgia</option>
               </select>
 
               <input
-                type="text"
+                type="search"
                 placeholder="Search Universities..."
-                className="flex-1 px-4 py-3 text-black outline-none"
+                className="min-h-[48px] flex-1 px-4 py-3 text-sm outline-none sm:min-h-0"
+                style={{
+                  backgroundColor: "var(--input-bg)",
+                  color: "var(--text-heading)",
+                }}
               />
 
-              <button className="bg-teal-600 px-6 text-white">
+              <button
+                type="button"
+                className="px-5 py-3 text-[var(--accent-foreground)] sm:px-6"
+                style={{ backgroundColor: "var(--accent)" }}
+                aria-label="Search"
+              >
                 🔍
               </button>
             </div>
-
-          </div>
+          </FadeUp>
         </div>
 
-        {/* 🔥 LEFT BUTTON */}
-        <button
+        {/* Desktop counselling tab */}
+        <motion.button
+          type="button"
+          onClick={() => setShowPopup(true)}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
+          className="fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 origin-right rotate-[-90deg] rounded-t-xl px-4 py-3 text-sm font-semibold tracking-wide text-[var(--accent-foreground)] shadow-lg transition hover:opacity-90 md:block"
+          style={{ backgroundColor: "var(--accent)" }}
+        >
+          GET FREE COUNSELLING
+        </motion.button>
+
+        {/* Mobile / small tablet CTA */}
+        <motion.button
+          type="button"
+          onClick={() => setShowPopup(true)}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="fixed bottom-4 left-1/2 z-40 w-[min(calc(100vw-2rem),380px)] -translate-x-1/2 rounded-md px-4 py-3 text-center text-sm font-semibold text-[var(--accent-foreground)] shadow-lg transition hover:opacity-90 md:hidden"
+          style={{ backgroundColor: "var(--accent)" }}
+        >
+          Get free counselling
+        </motion.button>
+
+        <motion.button
+          type="button"
           onClick={() =>
-            setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+            setCurrent((prev) =>
+              prev === 0 ? HERO_IMAGES.length - 1 : prev - 1
+            )
           }
-          className="absolute left-5 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/40 transition"
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.95 }}
+          className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full p-2.5 text-white shadow-lg transition sm:left-4 sm:p-3 md:left-5"
+          style={{ backgroundColor: "rgba(255,255,255,0.25)" }}
+          aria-label="Previous slide"
         >
           ◀
-        </button>
+        </motion.button>
 
-        {/* 🔥 RIGHT BUTTON */}
-        <button
+        <motion.button
+          type="button"
           onClick={() =>
-            setCurrent((prev) => (prev + 1) % images.length)
+            setCurrent((prev) => (prev + 1) % HERO_IMAGES.length)
           }
-          className="absolute right-5 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/40 transition"
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.95 }}
+          className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full p-2.5 text-white shadow-lg transition sm:right-4 sm:p-3 md:right-5"
+          style={{ backgroundColor: "rgba(255,255,255,0.25)" }}
+          aria-label="Next slide"
         >
           ▶
-        </button>
-
+        </motion.button>
       </section>
 
-      {/* 🔥 STATS SECTION */}
-      <section className="py-16 bg-gray-100 text-center">
+      {/* STATS */}
+      <section className="bg-surface-muted py-12 text-center shadow-inner sm:py-16">
+        <FadeUp className="px-4">
+          <h2 className="text-2xl font-semibold text-text-heading sm:text-3xl md:text-4xl">
+            WE ARE THE WORLD&apos;S LARGEST UNIVERSITY CATALOG
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-text-muted">
+            Discover university pages with information on study programs and
+            tuition fees in just 60 seconds, for free!
+          </p>
+        </FadeUp>
 
-        <h2 className="text-3xl md:text-4xl font-semibold text-gray-800">
-          WE ARE THE WORLD’S LARGEST UNIVERSITY CATALOG
-        </h2>
-
-        <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-          Discover university pages with information on study programs and tuition fees in just 60 seconds, for free!
-        </p>
-
-        {/* STATS GRID */}
-        <div ref={sectionRef} className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 px-10">
-
-          <div className="flex flex-col items-center">
-            <span className="text-4xl font-bold text-gray-800">
+        <div
+          ref={sectionRef}
+          className="mt-10 grid grid-cols-2 gap-6 px-4 sm:mt-12 sm:gap-8 sm:px-8 md:grid-cols-4 md:px-10"
+        >
+          <FadeItem index={0} className="flex flex-col items-center">
+            <span className="text-3xl font-bold text-text-heading sm:text-4xl">
               <Counter target={10} />+
             </span>
-            <p className="text-gray-600 mt-2 text-sm">Years Industry Experience</p>
-          </div>
+            <p className="mt-2 text-xs text-text-muted sm:text-sm">
+              Years Industry Experience
+            </p>
+          </FadeItem>
 
-          <div className="flex flex-col items-center md:border-l border-gray-300">
-            <span className="text-4xl font-bold text-gray-800">
+          <FadeItem index={1} className="flex flex-col items-center border-[var(--border)] md:border-l md:pl-4">
+            <span className="text-3xl font-bold text-text-heading sm:text-4xl">
               <Counter target={10} />+
             </span>
-            <p className="text-gray-600 mt-2 text-sm">Branches in India</p>
-          </div>
+            <p className="mt-2 text-xs text-text-muted sm:text-sm">
+              Branches in India
+            </p>
+          </FadeItem>
 
-          <div className="flex flex-col items-center md:border-l border-gray-300">
-            <span className="text-4xl font-bold text-gray-800">
+          <FadeItem index={2} className="flex flex-col items-center border-[var(--border)] md:border-l md:pl-4">
+            <span className="text-3xl font-bold text-text-heading sm:text-4xl">
               <Counter target={2000} />+
             </span>
-            <p className="text-gray-600 mt-2 text-sm">Applications Processed</p>
-          </div>
+            <p className="mt-2 text-xs text-text-muted sm:text-sm">
+              Applications Processed
+            </p>
+          </FadeItem>
 
-          <div className="flex flex-col items-center md:border-l border-gray-300">
-            <span className="text-4xl font-bold text-gray-800">
+          <FadeItem index={3} className="flex flex-col items-center border-[var(--border)] md:border-l md:pl-4">
+            <span className="text-3xl font-bold text-text-heading sm:text-4xl">
               <Counter target={229} />+
             </span>
-            <p className="text-gray-600 mt-2 text-sm">Top Universities</p>
-          </div>
-
-        </div>
-
-      </section>
-
-
-
-      {/* 🔥 POPULAR DISCIPLINES */}
-      <section className="py-16 bg-gradient-to-r from-teal-500 to-teal-400">
-
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-white">
-          POPULAR DISCIPLINES
-        </h2>
-
-        {/* CARDS */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 px-10">
-
-          {/* CARD 1 */}
-          <div className="bg-white rounded-xl overflow-hidden shadow-lg">
-            <div className="relative h-52">
-              <Image src="/images/07.png" alt="course" fill className="object-cover" />
-            </div>
-            <div className="p-5">
-              <h3 className="text-lg font-semibold">Medical</h3>
-              <p className="text-gray-600 text-sm mt-2">Explore MBBS and healthcare programs worldwide.</p>
-            </div>
-          </div>
-
-          {/* CARD 2 */}
-          <div className="bg-white rounded-xl overflow-hidden shadow-lg">
-            <div className="relative h-52">
-              <Image src="/images/engineering22.jpg" alt="course" fill className="object-cover" />
-            </div>
-            <div className="p-5">
-              <h3 className="text-lg font-semibold">Engineering</h3>
-              <p className="text-gray-600 text-sm mt-2">Top engineering universities across the globe.</p>
-            </div>
-          </div>
-
-          {/* CARD 3 */}
-          <div className="bg-white rounded-xl overflow-hidden shadow-lg">
-            <div className="relative h-52">
-              <Image src="/images/management23.jpg" alt="course" fill className="object-cover" />
-            </div>
-            <div className="p-5">
-              <h3 className="text-lg font-semibold">Business</h3>
-              <p className="text-gray-600 text-sm mt-2">Study management and MBA programs abroad.</p>
-            </div>
-          </div>
-
+            <p className="mt-2 text-xs text-text-muted sm:text-sm">
+              Top Universities
+            </p>
+          </FadeItem>
         </div>
       </section>
-      {/* 🔥 POPULAR DISCIPLINES */}
-      <section className="py-16 ">
 
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-black">
-          Most Popular Courses
-        </h2>
+      {/* POPULAR DISCIPLINES */}
+      <section className="discipline-band py-12 text-[var(--text-on-dark)] shadow-lg sm:py-16">
+        <FadeUp className="px-4 text-center">
+          <h2 className="text-2xl font-bold sm:text-3xl md:text-4xl">
+            POPULAR DISCIPLINES
+          </h2>
+        </FadeUp>
 
-        {/* GRID */}
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-10 bg-gray-100 ">
-
-          {/* CARD */}
+        <div className="mt-10 grid grid-cols-1 gap-6 px-4 sm:mt-12 sm:grid-cols-2 sm:gap-8 sm:px-8 md:grid-cols-3 md:px-10">
           {[
-            { title: "Medical", img: "/images/medical.jpg" },
-            { title: "Engineering", img: "/images/engineering2.jpg" },
-            { title: "Management", img: "/images/management.jpg" },
-
-
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-xl overflow-hidden shadow-lg hover:scale-105 transition duration-300 "
+            {
+              title: "Medical",
+              img: "/images/07.png",
+              desc: "Explore MBBS and healthcare programs worldwide.",
+            },
+            {
+              title: "Engineering",
+              img: "/images/engineering22.jpg",
+              desc: "Top engineering universities across the globe.",
+            },
+            {
+              title: "Business",
+              img: "/images/management23.jpg",
+              desc: "Study management and MBA programs abroad.",
+            },
+          ].map((card) => (
+            <LiftCard
+              key={card.title}
+              className="shadow-card shadow-card-hover overflow-hidden rounded-xl border"
+              style={{
+                backgroundColor: "var(--surface)",
+                borderColor: "var(--border)",
+              }}
             >
-              {/* IMAGE */}
-              <div className="relative h-48">
+              <div className="relative h-48 sm:h-52">
                 <Image
-                  src={item.img}
-                  alt={item.title}
+                  src={card.img}
+                  alt=""
                   fill
                   className="object-cover"
                 />
               </div>
-
-              {/* TITLE */}
-              <div className="bg-gray-100 text-center py-3 font-medium text-gray-700">
-                {item.title}
+              <div className="p-5">
+                <h3 className="text-lg font-semibold text-text-heading">
+                  {card.title}
+                </h3>
+                <p className="mt-2 text-sm text-text-muted">{card.desc}</p>
               </div>
-            </div>
+            </LiftCard>
           ))}
-
         </div>
       </section>
-      {/* 🔥 MOST POPULAR COURSES */}
-      <section className="py-16 bg-white">
 
-        {/* 🔥 TITLE */}
-        <h2 className="text-2xl md:text-3xl font-semibold text-center text-gray-800 ">
-          TOP RANKING UNIVERSITIES
-        </h2>
+      {/* MOST POPULAR COURSES */}
+      <section className="bg-app-bg py-12 sm:py-16">
+        <FadeUp className="px-4 text-center">
+          <h2 className="text-2xl font-bold text-text-heading sm:text-3xl md:text-4xl">
+            Most Popular Courses
+          </h2>
+        </FadeUp>
 
-        {/* 🔥 LINE */}
-        <div className="w-24 h-1 bg-teal-500 mx-auto mt-3 rounded"></div>
+        <div className="mt-8 grid grid-cols-1 gap-6 px-4 sm:mt-10 sm:grid-cols-2 sm:gap-8 sm:px-8 md:grid-cols-3 md:px-10">
+          {[
+            { title: "Medical", img: "/images/medical.jpg" },
+            { title: "Engineering", img: "/images/engineering2.jpg" },
+            { title: "Management", img: "/images/management.jpg" },
+          ].map((item) => (
+            <LiftCard
+              key={item.title}
+              className="shadow-card shadow-card-hover overflow-hidden rounded-xl border transition hover:border-[var(--border-strong)]"
+              style={{
+                backgroundColor: "var(--surface)",
+                borderColor: "var(--border)",
+              }}
+            >
+              <div className="relative h-44 sm:h-48">
+                <Image
+                  src={item.img}
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div
+                className="py-3 text-center text-sm font-medium text-text-heading"
+                style={{ backgroundColor: "var(--surface-muted)" }}
+              >
+                {item.title}
+              </div>
+            </LiftCard>
+          ))}
+        </div>
+      </section>
 
-        {/* 🔥 GRID */}
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8 px-10 bg-gray-100 ">
+      {/* TOP UNIVERSITIES */}
+      <section
+        className="py-12 shadow-inner sm:py-16"
+        style={{ backgroundColor: "var(--surface)" }}
+      >
+        <FadeUp className="px-4 text-center">
+          <h2 className="text-xl font-semibold text-text-heading sm:text-2xl md:text-3xl">
+            TOP RANKING UNIVERSITIES
+          </h2>
+          <div
+            className="mx-auto mt-3 h-1 w-24 rounded"
+            style={{ backgroundColor: "var(--accent)" }}
+          />
+        </FadeUp>
 
-          {/* CARD */}
+        <div className="mt-8 grid grid-cols-1 gap-6 px-4 sm:mt-10 sm:grid-cols-2 sm:gap-8 sm:px-8 md:grid-cols-3 md:px-10">
           {[
             {
               name: "Batumi Shota Rustaveli State University",
@@ -380,166 +494,260 @@ export default function Home() {
               name: "North-Western State Medical University",
               img: "/images/North.jpg",
             },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 cursor-pointer"
+          ].map((item) => (
+            <LiftCard
+              key={item.name}
+              className="shadow-card shadow-card-hover cursor-pointer overflow-hidden rounded-xl border transition hover:border-[var(--border-strong)]"
+              style={{
+                backgroundColor: "var(--surface-elevated)",
+                borderColor: "var(--border)",
+              }}
             >
-              {/* IMAGE */}
-              <div className="relative h-52">
+              <div className="relative h-48 sm:h-52">
                 <Image
                   src={item.img}
-                  alt={item.name}
+                  alt=""
                   fill
-                  className="object-cover rounded-t-xl"
+                  className="rounded-t-xl object-cover"
                 />
               </div>
-
-              {/* TEXT */}
               <div className="flex items-center gap-2 px-4 py-3">
-
-                <p className="text-sm text-gray-700 font-medium">
-                  {item.name}
-                </p>
+                <p className="text-sm font-medium text-text-body">{item.name}</p>
               </div>
-            </div>
+            </LiftCard>
           ))}
-
         </div>
       </section>
-      <div className="flex justify-center items-center py-32 bg-gray-100">
-        <div className="relative w-[550px] h-[550px]">
 
-          {/* 🔥 CENTER LOGO */}
+      {/* Process — mobile / tablet list */}
+      <section className="bg-surface-muted py-12 lg:hidden">
+        <FadeUp className="mb-8 px-4 text-center">
+          <h2 className="text-2xl font-semibold text-text-heading">
+            Your journey with us
+          </h2>
+        </FadeUp>
+        <div className="mx-auto grid max-w-3xl grid-cols-1 gap-5 px-4 sm:grid-cols-2">
+          {steps.map((item, si) => (
+            <FadeItem
+              key={item.title}
+              index={si}
+              className="flex gap-3 rounded-xl border p-4 shadow-card"
+              style={{
+                backgroundColor: "var(--surface)",
+                borderColor: "var(--border)",
+              }}
+            >
+              <div
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-lg text-white"
+                style={{ backgroundColor: item.dotVar }}
+              >
+                {item.icon}
+              </div>
+              <div className="min-w-0">
+                <h3 className="font-semibold text-text-heading">{item.title}</h3>
+                <p className="mt-1 text-sm leading-snug text-text-muted">
+                  {item.desc}
+                </p>
+              </div>
+            </FadeItem>
+          ))}
+        </div>
+      </section>
+
+      {/* Process — desktop orbit */}
+      <div className="hidden justify-center bg-surface-muted py-20 lg:flex">
+        <div className="relative h-[min(90vw,550px)] w-[min(90vw,550px)]">
           <div className="absolute inset-0 flex items-center justify-center">
             <Image
-              src="/images/logo55.png" // 👈 ye correct hai tumhare code me
-              alt="logo"
+              src="/images/logo55.png"
+              alt=""
               width={460}
               height={460}
-              className="object-contain"
+              className="h-auto w-[min(72%,460px)] object-contain"
             />
           </div>
 
-          {/* 🔥 STEPS */}
           {steps.map((item, i) => {
-            const radius = 280;
+            const radius = ORBIT_RADIUS_PX;
             const angleRad = (item.angle * Math.PI) / 180;
-
             const x = radius * Math.cos(angleRad);
             const y = radius * Math.sin(angleRad);
 
             return (
               <div
                 key={i}
-                className="absolute text-center w-36"
+                className="absolute w-36 text-center"
                 style={{
                   left: "50%",
                   top: "50%",
                   transform: `translate(${x}px, ${y}px) translate(-50%, -50%)`,
                 }}
               >
-                {/* 🔵 ICON CIRCLE */}
-                <div className={`w-16 h-16 mx-auto rounded-full ${item.color} flex items-center justify-center text-white text-xl shadow-lg hover:scale-110 transition`}>
-                  {item.icon}
-                </div>
-
-                {/* 📝 TITLE */}
-                <h3 className="mt-3 font-semibold text-gray-800">
-                  {item.title}
-                </h3>
-
-                {/* 📄 DESC */}
-                <p className="text-sm text-gray-500 leading-tight mt-1">
-                  {item.desc}
-                </p>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    delay: i * 0.05,
+                    duration: 0.4,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <div
+                    className="mx-auto flex h-14 w-14 items-center justify-center rounded-full text-lg text-white shadow-lg xl:h-16 xl:w-16"
+                    style={{ backgroundColor: item.dotVar }}
+                  >
+                    {item.icon}
+                  </div>
+                  <h3 className="mt-2 font-semibold text-text-heading xl:mt-3">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1 text-xs leading-tight text-text-muted xl:text-sm">
+                    {item.desc}
+                  </p>
+                </motion.div>
               </div>
             );
           })}
         </div>
       </div>
-      {showPopup && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
 
-          {/* BOX */}
-          <div className="bg-white w-[90%] md:w-[450px] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-hidden relative">
-
-            {/* HEADER */}
-            <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white px-6 py-4 flex justify-between items-center">
-              <h2 className="font-semibold text-lg tracking-wide">
+      <AnimatePresence>
+        {showPopup && (
+          <motion.div
+            key="counselling-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex items-center justify-center px-3"
+            style={{ backgroundColor: "var(--overlay-scrim)" }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="counselling-title"
+            onClick={() => setShowPopup(false)}
+          >
+            <motion.div
+              key="counselling-modal"
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 16 }}
+              transition={{ type: "spring", damping: 26, stiffness: 320 }}
+              className="shadow-card relative max-h-[90vh] w-full max-w-[420px] overflow-y-auto rounded-xl border border-[var(--border)] shadow-2xl sm:max-w-[450px]"
+              style={{ backgroundColor: "var(--surface)" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+            <div className="popup-header flex items-center justify-between px-4 py-3 text-[var(--accent-foreground)] sm:px-6 sm:py-4">
+              <h2
+                id="counselling-title"
+                className="text-base font-semibold tracking-wide sm:text-lg"
+              >
                 Get Free Counselling
               </h2>
               <button
+                type="button"
                 onClick={() => setShowPopup(false)}
-                className="text-xl hover:rotate-90 transition duration-300"
+                className="text-xl transition hover:opacity-80 sm:text-2xl"
+                aria-label="Close"
               >
                 ✖
               </button>
             </div>
 
-            {/* FORM */}
-            <div className="p-6 space-y-4">
-
-              {/* NAME */}
+            <div className="space-y-3 p-4 sm:space-y-4 sm:p-6">
               <input
                 type="text"
                 placeholder="Full Name"
-                className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+                className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[var(--accent)] sm:px-4 sm:text-base"
+                style={{
+                  borderColor: "var(--input-border)",
+                  backgroundColor: "var(--input-bg)",
+                  color: "var(--text-heading)",
+                }}
               />
 
-              {/* EMAIL */}
               <input
                 type="email"
                 placeholder="Email Address"
-                className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+                className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[var(--accent)] sm:px-4 sm:text-base"
+                style={{
+                  borderColor: "var(--input-border)",
+                  backgroundColor: "var(--input-bg)",
+                  color: "var(--text-heading)",
+                }}
               />
 
-              {/* MOBILE */}
               <div className="flex gap-2">
-                <select className="border border-gray-300 px-3 py-2.5 rounded-lg w-[35%]">
+                <select
+                  className="w-[35%] rounded-lg border px-2 py-2.5 text-sm sm:px-3"
+                  style={{
+                    borderColor: "var(--input-border)",
+                    backgroundColor: "var(--input-bg)",
+                    color: "var(--text-heading)",
+                  }}
+                >
                   <option>+91</option>
                   <option>+1</option>
                 </select>
 
                 <input
-                  type="text"
+                  type="tel"
                   placeholder="Mobile Number"
-                  className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full rounded-lg border px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[var(--accent)] sm:px-4 sm:text-base"
+                  style={{
+                    borderColor: "var(--input-border)",
+                    backgroundColor: "var(--input-bg)",
+                    color: "var(--text-heading)",
+                  }}
                 />
               </div>
 
-              {/* STATE */}
-              <select className="w-full border border-gray-300 px-4 py-2.5 rounded-lg">
+              <select
+                className="w-full rounded-lg border px-3 py-2.5 text-sm sm:px-4 sm:text-base"
+                style={{
+                  borderColor: "var(--input-border)",
+                  backgroundColor: "var(--input-bg)",
+                  color: "var(--text-heading)",
+                }}
+              >
                 <option>Select State</option>
                 <option>Delhi</option>
                 <option>Mumbai</option>
               </select>
 
-              {/* CAPTCHA */}
-              <div className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg border">
-                <span className="text-sm font-medium text-gray-600">1 + 2 = ?</span>
+              <div
+                className="flex items-center justify-between rounded-lg border px-3 py-2"
+                style={{
+                  backgroundColor: "var(--surface-muted)",
+                  borderColor: "var(--border)",
+                }}
+              >
+                <span className="text-xs font-medium text-text-muted sm:text-sm">
+                  1 + 2 = ?
+                </span>
                 <input
                   type="text"
-                  className="border px-2 py-1 rounded w-20"
+                  className="w-16 rounded border px-2 py-1 text-sm sm:w-20"
+                  style={{
+                    borderColor: "var(--input-border)",
+                    backgroundColor: "var(--input-bg)",
+                    color: "var(--text-heading)",
+                  }}
                 />
               </div>
 
-              {/* BUTTON */}
               <button
-                onClick={() => alert("Form Submitted 🚀")}
-                className="w-full bg-gradient-to-r from-blue-900 to-blue-700 
-          text-white py-3 rounded-lg font-semibold 
-          hover:scale-[1.02] hover:shadow-lg transition duration-300"
+                type="button"
+                onClick={() => alert("Form Submitted")}
+                className="popup-submit w-full rounded-lg py-2.5 text-sm font-semibold text-white transition hover:opacity-95 sm:py-3 sm:text-base"
               >
                 ENQUIRE NOW
               </button>
-
             </div>
-          </div>
-        </div>
-      )}
-
-
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
