@@ -11,6 +11,8 @@ export default function Header() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [openCourse, setOpenCourse] = useState(false);
+   const [openCountry, setOpenCountry] = useState(false);
 
   const menuItems = [
     "HOME",
@@ -232,43 +234,121 @@ export default function Header() {
       </div>
 
       <AnimatePresence>
-        {mobileMenu && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.22 }}
-            className="absolute left-0 top-full flex w-full flex-col gap-3 border-t p-4 shadow-xl md:hidden"
-            style={{
-              backgroundColor: "var(--surface-elevated)",
-              borderColor: "var(--border)",
-            }}
+  {mobileMenu && (
+    <div className="fixed inset-0 z-[60] md:hidden">
+      
+      {/* OVERLAY */}
+      <motion.div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={() => setMobileMenu(false)}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+
+      {/* SIDEBAR */}
+      <motion.div
+        initial={{ x: "-100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "-100%" }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className="absolute left-0 top-0 h-full w-[280px] bg-[var(--surface-elevated)] shadow-xl flex flex-col overflow-y-auto"
+      >
+        
+        {/* HEADER */}
+        <div className="flex justify-between items-center p-4 border-b border-[var(--border)]">
+          <h2 className="font-bold text-lg">Menu</h2>
+          <button onClick={() => setMobileMenu(false)}>✕</button>
+        </div>
+
+        {/* MENU ITEMS */}
+        <div className="flex flex-col">
+
+          {/* HOME */}
+          <Link href="/" onClick={() => setMobileMenu(false)}>
+            <div className="px-4 py-3 border-b">HOME</div>
+          </Link>
+
+          {/* COURSES */}
+          <div
+            onClick={() => setOpenCourse(!openCourse)}
+            className="px-4 py-3 border-b flex justify-between items-center cursor-pointer"
           >
-            {menuItems.map((item) => {
+            COURSES
+            <span>{openCourse ? "▲" : "▼"}</span>
+          </div>
+
+          {openCourse && (
+            <div className="bg-[var(--surface-muted)]">
+              {courses.map((c, i) => (
+                <Link key={i} href={getCourseLink(c.name)}>
+                  <div
+                    onClick={() => setMobileMenu(false)}
+                    className="px-8 py-2 border-b text-sm flex gap-2"
+                  >
+                    <span>{c.icon}</span>
+                    {c.name}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* COUNTRIES */}
+          <div
+            onClick={() => setOpenCountry(!openCountry)}
+            className="px-4 py-3 border-b flex justify-between items-center cursor-pointer"
+          >
+            COUNTRIES
+            <span>{openCountry ? "▲" : "▼"}</span>
+          </div>
+
+          {openCountry && (
+            <div className="bg-[var(--surface-muted)]">
+              {countries.map((c, i) => (
+                <div
+                  key={i}
+                  className="px-8 py-2 border-b text-sm flex items-center gap-2"
+                >
+                  <img src={c.flag} className="w-5 h-5 rounded-full" />
+                  {c.name}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* OTHER MENU ITEMS */}
+          {menuItems
+            .filter(
+              (item) =>
+                item !== "HOME" &&
+                item !== "COURSES" &&
+                item !== "COUNTRIES"
+            )
+            .map((item) => {
               const link = getLink(item);
 
               return link ? (
                 <Link key={item} href={link}>
                   <div
                     onClick={() => setMobileMenu(false)}
-                    className="cursor-pointer border-b py-2 text-[var(--text-heading)] border-[var(--border)]"
+                    className="px-4 py-3 border-b"
                   >
                     {item}
                   </div>
                 </Link>
               ) : (
-                <div
-                  key={item}
-                  onClick={() => setMobileMenu(false)}
-                  className="cursor-pointer border-b py-2 text-[var(--text-heading)] border-[var(--border)]"
-                >
+                <div key={item} className="px-4 py-3 border-b">
                   {item}
                 </div>
               );
             })}
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+
+      </motion.div>
+    </div>
+  )}
+</AnimatePresence>
     </motion.header>
   );
 }
